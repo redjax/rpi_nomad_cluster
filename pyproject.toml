@@ -1,0 +1,24 @@
+
+[project]
+name = ""
+version = ""
+description = ""
+authors = [
+    {name = "redjax", email = "jackenyon@gmail.com"},
+]
+dependencies = [
+    "ansible>=8.1.0",
+    "jinja2>=3.1.2",
+]
+requires-python = ">=3.11"
+license = {text = "MIT"}
+
+[tool.pdm.dev-dependencies]
+dev = [
+    "black>=23.3.0",
+    "ruff>=0.0.276",
+    "pytest>=7.4.0",
+]
+
+[tool.pdm.scripts]
+start = { shell = "cd pi_cluster && pdm run python main.py" }
