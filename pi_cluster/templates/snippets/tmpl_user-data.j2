@@ -1,0 +1,106 @@
+#cloud-config
+
+# This is the user-data configuration file for cloud-init. By default this sets
+# up an initial user called "ubuntu" with password "ubuntu", which must be
+# changed at first login. However, many additional actions can be initiated on
+# first boot from this file. The cloud-init documentation has more details:
+#
+# https://cloudinit.readthedocs.io/
+
+## Set hostname & FQDN
+hostname: {{ userdata.hostname }}
+fqdn: {{ userdata.fqdn }}
+## Allow cloud-init to manage /etc/hosts to update with new hostname
+manage_etc_hosts: {{ userdata.manage_hosts }}
+
+## Do not expire passwd after cloud-init
+chpasswd:
+  expire: {% userdata.chpasswd.expire %}false{% userdata.chpasswd.expire %}true{% endif %}
+  users:
+    - name: {{ userdata.chpasswd.users[0]}}
+      password: {{ userdata.chpasswd.users[0].password }}
+      type: {{ userdata.chpasswd.users[0].type }}
+
+## Disable apt update/upgrade
+package_upgrade: {% if userdata.packages.upgrade == True %}true{% else %}false{% endif %}
+package_update: {% if userdata.packages.update == True %}true{% else %}false{% endif %}
+
+## Allow SSH login with password
+ssh_pwauth: {% if userdata.ssh_pass_auth == True %}true{% else %}false{% endif %}
+
+## Run commands at each boot
+bootcmd:
+  ## Disable ipv6 on all interfaces
+  - sysctl net.ipv6.conf.all.disable_ipv6=1
+
+ssh_authorized_keys:
+  - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCxKmnxljp5YaI8jW7yP8oUbW6P7QcxkzXbqontFEwUEfc+2tbMUlBAzim3ufdMAm9H/cORtLQ4RSELMUEYHcQhJzicF6a5GbNWlkUSo0/DtbdWZh3Xvo6eDzowXCsHn2ewsxcJI51QOVZg5mBOHWthf+0dUVI0XNKtxTHofPYZeJggra1cT5xm8Y6omSeWD2fhdMJ3huuRt3XlzRA25Y8d+v/vMIGP1TAEJ9GI6KOnMWA2reXnw4QSi20yXZfHPiLfycRpoZl56CHy8F28QzLBUvGorhqA5S2OZHJ/R+R48fm1rEybjPC+GW+VOnlf4IL4pd8yxmLHq02aCdXQrJSVeptg3jW0QgoPYMtOYCZXAZSWTW8cZLwwVAXMYWEQVpnPSFbnNVBEc7LKeliacjqP0igRWL7rhPv05L1MXqc3HS1BIi3ZgH4obpDDLgDDTQvwpxCUXoNVOiI2m5u8CYg1G2tWXUUwiPEOg9qeOpIC1YJzQs73Wh96+9ExWzcgUN3gmYBSHgtVqK/HKzrO0Cp+SPkU2iMZ0UdUOM1WqbZKrBw1HldJ829t2dfXx/Up3ORiJW7J4CUVuXxYhCVXAdgkViidHZLp92LW8dD3+7s7JEFZo7xtC30/I0ZYzay3UZMtkDx0UzorUbs2p1U+2heV2DOY9gaQVbYZCvvAoSUaxw== jack@colossus
+  - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCx8c4Tn3k1kLzah/5PSNxPPb7X0Jz+eUxyoqvDB8nJPgSndyNDRV8FK15KS0GZU4BoJrDe3lmVc3BH6jujEmO6qzlJmF7XF6BUWyXjf4rTf+K8b4F4oLgHEIhTyc9URXxK7OVkn1T0YQr/V1c2NuUvKa9UI5KpzThRzTKbXiYw4UNQVTkd7MJq0f7offQ7y1z/vogcoYD1UQ4dwSQxKK3h4BbpOFNOsrC8WLcheTMZoex+tcYXzBS4S6yeqcRPvwX28f6XP4CrgBb5f8You5fjkuA6nWNW0IDzQgFkbr9w/uf7uI/plrmARWKK6oat+FUUCeNxMzy61wytXDFf1rtZLW1XkUgvXZnhx681qDFdzcEiDN9ZxCGJ6Wme7KAHLF+d9KNS941zel6QR+HuM+jiFLaFnttLtg4jGyrtatyLMMRuiea7fRiduFTI4rGcFdyremyzvMiOIccAcQeF3Y9ruhN3QQ2TswZQErlRDohRTs7bKNAcpak1WFYIWESaDcRLZPOikKVOX114WL1kaS0mhnp7diMujzKOzxLt6BMQTZYGLCG2MoEauK8LBJM5rV8ziIrk1h3C8dVTLKijGHVcGyxNWg2jZm5aCoSS7ITb8OtrZd4A6BlzWrrPBJWuJiZtFGAhwyoWzHCq4n/sY3ToPeDUtmRKQ2QaREdRTdqY8Q== jack@cybernex
+  - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDAdY3ZVqdBGp6tTpT8anxmLKx2lsWnxxut5DEETp4CQsxhoAvIMHuYS92hKnai8ZrgHjLuPeDad4kRaJ7rQ1jzqVuyWuoS6the7EW/2aROi1f7B6wB4JEK7kGCVLT0+gMQ5tVfgGwUMYxWPjQ46QjvLddw2PdOAQDKUcwCqq5i/ibexj35mu0D1oZwTcCNP1AxnL+ULjIaydrwBHCvpl/noGJYEgW6pq1+KjwdC8LgxnwETQt5GTip9FGOSVSA9hvGCVvk4XRzND8cMS1bf2TcjrMIOl4UdxK32+IQQXh8yMQj6rpHznwNyoqrBMnu+oSGP3MehQHOrR3k+CiYJKexUclI2wcFOf/XOIec2HKnDkMNml2c9kH64MiWtPMQ9lcldfLjolq8Qu78hghYd6z2Xlyywf7l/qGijJPf3nn4NugEjh4GFEvp/zmRQ3Xmn/+4c+Oo4+/f4Sj8SxhhxwL0P+S0ed3ydKsfpmS9DVWZkTmf17337cu0KsFWtVYbMnW65qehC+i8nJJUwAJbL7v4sIQanueAE9wk4zIFYYpWtAS6YIyvostXlFFq3yh1/q1pl69Oona2DRSPmhxizrKktyyGEzqHVO3wwS3PQQEUOS7G2kMZzjgzsjM7JLfE94onh91nrWxWvUDsfzgydaUbnguUc00uDxS9tXvXa/dzgQ== jack@cybernex
+
+## Set users
+users:
+  - default
+  - name: ubuntu
+    groups: users,adm,dialout,audio,netdev,video,plugdev,cdrom,games,input,gpio,spi,i2c,render,sudo
+    shell: /bin/bash
+    lock_passwd: false
+    passwd: $6$rounds=4096$wqGPwr4E3xxqEs1p$uBA6lLm.YzG29tRadOnIFf0Yd1xIbMI4ugooLnwj6JGWACAKY5lTl6koG0UEWuyIAlPJhq.fx9oYv.7LmnPxH1
+    ssh_authorized_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCxKmnxljp5YaI8jW7yP8oUbW6P7QcxkzXbqontFEwUEfc+2tbMUlBAzim3ufdMAm9H/cORtLQ4RSELMUEYHcQhJzicF6a5GbNWlkUSo0/DtbdWZh3Xvo6eDzowXCsHn2ewsxcJI51QOVZg5mBOHWthf+0dUVI0XNKtxTHofPYZeJggra1cT5xm8Y6omSeWD2fhdMJ3huuRt3XlzRA25Y8d+v/vMIGP1TAEJ9GI6KOnMWA2reXnw4QSi20yXZfHPiLfycRpoZl56CHy8F28QzLBUvGorhqA5S2OZHJ/R+R48fm1rEybjPC+GW+VOnlf4IL4pd8yxmLHq02aCdXQrJSVeptg3jW0QgoPYMtOYCZXAZSWTW8cZLwwVAXMYWEQVpnPSFbnNVBEc7LKeliacjqP0igRWL7rhPv05L1MXqc3HS1BIi3ZgH4obpDDLgDDTQvwpxCUXoNVOiI2m5u8CYg1G2tWXUUwiPEOg9qeOpIC1YJzQs73Wh96+9ExWzcgUN3gmYBSHgtVqK/HKzrO0Cp+SPkU2iMZ0UdUOM1WqbZKrBw1HldJ829t2dfXx/Up3ORiJW7J4CUVuXxYhCVXAdgkViidHZLp92LW8dD3+7s7JEFZo7xtC30/I0ZYzay3UZMtkDx0UzorUbs2p1U+2heV2DOY9gaQVbYZCvvAoSUaxw== jack@colossus
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCx8c4Tn3k1kLzah/5PSNxPPb7X0Jz+eUxyoqvDB8nJPgSndyNDRV8FK15KS0GZU4BoJrDe3lmVc3BH6jujEmO6qzlJmF7XF6BUWyXjf4rTf+K8b4F4oLgHEIhTyc9URXxK7OVkn1T0YQr/V1c2NuUvKa9UI5KpzThRzTKbXiYw4UNQVTkd7MJq0f7offQ7y1z/vogcoYD1UQ4dwSQxKK3h4BbpOFNOsrC8WLcheTMZoex+tcYXzBS4S6yeqcRPvwX28f6XP4CrgBb5f8You5fjkuA6nWNW0IDzQgFkbr9w/uf7uI/plrmARWKK6oat+FUUCeNxMzy61wytXDFf1rtZLW1XkUgvXZnhx681qDFdzcEiDN9ZxCGJ6Wme7KAHLF+d9KNS941zel6QR+HuM+jiFLaFnttLtg4jGyrtatyLMMRuiea7fRiduFTI4rGcFdyremyzvMiOIccAcQeF3Y9ruhN3QQ2TswZQErlRDohRTs7bKNAcpak1WFYIWESaDcRLZPOikKVOX114WL1kaS0mhnp7diMujzKOzxLt6BMQTZYGLCG2MoEauK8LBJM5rV8ziIrk1h3C8dVTLKijGHVcGyxNWg2jZm5aCoSS7ITb8OtrZd4A6BlzWrrPBJWuJiZtFGAhwyoWzHCq4n/sY3ToPeDUtmRKQ2QaREdRTdqY8Q== jack@cybernex
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDAdY3ZVqdBGp6tTpT8anxmLKx2lsWnxxut5DEETp4CQsxhoAvIMHuYS92hKnai8ZrgHjLuPeDad4kRaJ7rQ1jzqVuyWuoS6the7EW/2aROi1f7B6wB4JEK7kGCVLT0+gMQ5tVfgGwUMYxWPjQ46QjvLddw2PdOAQDKUcwCqq5i/ibexj35mu0D1oZwTcCNP1AxnL+ULjIaydrwBHCvpl/noGJYEgW6pq1+KjwdC8LgxnwETQt5GTip9FGOSVSA9hvGCVvk4XRzND8cMS1bf2TcjrMIOl4UdxK32+IQQXh8yMQj6rpHznwNyoqrBMnu+oSGP3MehQHOrR3k+CiYJKexUclI2wcFOf/XOIec2HKnDkMNml2c9kH64MiWtPMQ9lcldfLjolq8Qu78hghYd6z2Xlyywf7l/qGijJPf3nn4NugEjh4GFEvp/zmRQ3Xmn/+4c+Oo4+/f4Sj8SxhhxwL0P+S0ed3ydKsfpmS9DVWZkTmf17337cu0KsFWtVYbMnW65qehC+i8nJJUwAJbL7v4sIQanueAE9wk4zIFYYpWtAS6YIyvostXlFFq3yh1/q1pl69Oona2DRSPmhxizrKktyyGEzqHVO3wwS3PQQEUOS7G2kMZzjgzsjM7JLfE94onh91nrWxWvUDsfzgydaUbnguUc00uDxS9tXvXa/dzgQ== jack@cybernex
+    ## Allow passwordless sudo
+    sudo: ALL=(ALL) NOPASSWD:ALL
+
+## Netplan config
+write_files:
+  - path: /etc/cloud/cloud.cgf.d/99-custom-networking.cfg
+    permissions: "0644"
+    content: |
+      network: {config: disabled}
+
+  ## Create netplan config
+  - path: /etc/netplan/custom-cloud-init.yaml
+    permissions: "0644"
+    content: |
+      network:
+        version: 2
+        ethernets:
+          eth0:
+            dhcp4: false
+            dhcp6: false
+            # optional: true
+            addresses: 
+              - 192.168.1.60/24
+            gateway4: "192.168.1.1"
+            nameservers:
+              addresses: [192.168.1.1, 1.1.1.1, 1.0.0.1]
+
+runcmd:
+  ## cloud-init networking
+  - rm /etc/netplan/50-cloud-init.yaml
+  - netplan generate
+  - netplan apply
+  ## Keyboard setup
+  - localectl set-x11-keymap "us" pc105
+  - setupcon -k --force || true
+
+## Install default packages
+# packages:
+#   - curl
+#   - git
+#   - wget
+#   - tmux
+#   - htop
+#   - dos2unix
+
+## Enable ntp time
+ntp:
+  enabled: true
+
+## Uncomment below to trigger a reboot before finalizing cloud-init
+power_state:
+  mode: reboot
+
+final_message: "Completed cloud-init. You may now attempt login with the default user (ubuntu)"

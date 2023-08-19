@@ -1,0 +1,21 @@
+###########
+# Ansible #
+###########
+ansible_python_interpreter: "/usr/bin/python3"
+
+## User for connection.
+ansible_ssh_user: "ubuntu"
+## Path to SSH key (note: you must copy this to the host with ssh-copy-id before using Ansible)
+ansible_ssh_private_key_file: "/home/<user>/.ssh/<cluster_id_rsa_file>"
+
+## For path substitution, i.e. "/home/{{ remote_host_user }}"
+remote_host_user: "ubuntu"
+
+tailscale_preauth_key: ""
+
+#######
+# Git #
+#######
+git_default_branch_name: "main"
+git_user_name: "<git_user>"
+git_user_email: "no@no.com"

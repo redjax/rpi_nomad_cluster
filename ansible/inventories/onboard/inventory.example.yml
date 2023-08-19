@@ -1,0 +1,16 @@
+## Hosts can be deleted from inventories once initial setup is complete.
+#  This file is used with the create_ansible_svc_user.yml playbook. The
+#  play uses this inventory file to setup the remote ansible_svc user that
+#  future playbooks will run as.
+
+all:
+  hosts:
+    rpi-cl-srv1:
+      ansible_host: "192.168.1.xxx"
+      remote_ssh_user: "ubuntu"
+    rpi-cl-ag1:
+      ansible_host: "192.168.1.xxx"
+      remote_ssh_user: "ubuntu"
+    rpi-cl-ag2:
+      ansible_host: "192.168.1.xxx"
+      remote_ssh_user: "ubuntu"

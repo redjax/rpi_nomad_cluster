@@ -1,0 +1,22 @@
+#cloud-config
+# This file contains a netplan-compatible configuration which cloud-init
+# will apply on first-boot. Please refer to the cloud-init documentation and
+# the netplan reference for full details:
+#
+# https://cloudinit.readthedocs.io/
+# https://netplan.io/reference
+#
+# Some additional examples are commented out below
+
+network:
+  version: 2
+  ethernets:
+    {{ network.ethernets[0].device }}:
+      dhcp4: {% if network.ethernets[0].dhcp4 == True %}true{% else %}false{% endif %}
+      dhcp6: {% if network.ethernets[0].dhcp6 %}true{% else %}dhcp6: false{% endif %}
+      # optional: true
+      addresses:
+        - {{ network.ethernets[0].address }}
+      gateway4: '{{ network.ethernets[0].gateway }}'
+      nameservers:
+        addresses: {{ network.ethernets[0].nameservers }}

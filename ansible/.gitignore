@@ -1,0 +1,7 @@
+inventories/**/*.yml
+inventories/**/*.*.yml
+inventories/**/*.yaml
+inventories/**/*.*.yaml
+
+!inventories/**/*.example.yml
+!inventories/**/*.example.yaml

@@ -1,0 +1,21 @@
+###########
+# Ansible #
+###########
+ansible_python_interpreter: "/usr/bin/python3"
+
+## User for connection. I use a service account, "ansible_svc"
+ansible_ssh_user: "ansible_svc"
+## Path to SSH key (note: you must copy this to the host with ssh-copy-id before using Ansible)
+ansible_ssh_private_key_file: "/home/<user>/.ssh/<private_key>"
+
+## For path substitution, i.e. "/home/{{ remote_host_user }}"
+remote_host_user: "ubuntu"
+
+tailscale_preauth_key: ""
+
+#######
+# Git #
+#######
+git_default_branch_name: "main"
+git_user_name: "gitUsername"
+git_user_email: "no@no.com"

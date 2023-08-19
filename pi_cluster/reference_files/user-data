@@ -1,0 +1,106 @@
+#cloud-config
+
+# This is the user-data configuration file for cloud-init. By default this sets
+# up an initial user called "ubuntu" with password "ubuntu", which must be
+# changed at first login. However, many additional actions can be initiated on
+# first boot from this file. The cloud-init documentation has more details:
+#
+# https://cloudinit.readthedocs.io/
+#
+# To generate hashed passwords for this file, use the mkpasswd command, part of the 'whois' package
+#   $ mkpasswd --method=SHA-512 --rounds=4096
+
+## Set hostname & FQDN
+hostname: example
+fqdn: example.home
+## Allow cloud-init to manage /etc/hosts to update with new hostname
+manage_etc_hosts: true
+
+## Do not expire passwd after cloud-init
+chpasswd:
+  expire: false
+  users:
+    - name: ubuntu
+      ## 'ubuntu' string hashed with mkpasswd
+      password: $6$rounds=4096$wqGPwr4E3xxqEs1p$uBA6lLm.YzG29tRadOnIFf0Yd1xIbMI4ugooLnwj6JGWACAKY5lTl6koG0UEWuyIAlPJhq.fx9oYv.7LmnPxH1
+      type: hash
+
+## Disable apt update/upgrade
+package_upgrade: false
+package_update: false
+
+## Allow SSH login with password
+ssh_pwauth: true
+
+## Run commands at each boot
+bootcmd:
+  ## Disable ipv6 on all interfaces
+  - sysctl net.ipv6.conf.all.disable_ipv6=1
+
+## Set users
+users:
+  - default
+  - name: ubuntu
+    groups: users,adm,dialout,audio,netdev,video,plugdev,cdrom,games,input,gpio,spi,i2c,render,sudo
+    shell: /bin/bash
+    lock_passwd: false
+    ## 'ubuntu' string hashed with mkpasswd
+    passwd: $6$rounds=4096$wqGPwr4E3xxqEs1p$uBA6lLm.YzG29tRadOnIFf0Yd1xIbMI4ugooLnwj6JGWACAKY5lTl6koG0UEWuyIAlPJhq.fx9oYv.7LmnPxH1
+    ssh_authorized_keys:
+      - ssh-rsa ...
+      - ssh-rsa ...
+      - ssh-rsa ...
+    ## Allow passwordless sudo
+    sudo: ALL=(ALL) NOPASSWD:ALL
+
+## Netplan config
+write_files:
+  - path: /etc/cloud/cloud.cgf.d/99-custom-networking.cfg
+    permissions: "0644"
+    content: |
+      network: {config: disabled}
+
+  ## Create custom netplan config
+  - path: /etc/netplan/custom-cloud-init.yaml
+    permissions: "0644"
+    content: |
+      network:
+        version: 2
+        ethernets:
+          eth0:
+            dhcp4: false
+            dhcp6: false
+            # optional: true
+            addresses: 
+              - 192.168.1.xxx/24
+            gateway4: "192.168.1.1"
+            nameservers:
+              addresses: [192.168.1.1, 1.1.1.1, 1.0.0.1]
+
+runcmd:
+  ## cloud-init networking
+  - rm /etc/netplan/50-cloud-init.yaml
+  - netplan generate
+  - netplan apply
+  ## Keyboard setup
+  - localectl set-x11-keymap "us" pc105
+  - setupcon -k --force || true
+
+## Install default packages
+# packages:
+#   - curl
+#   - git
+#   - wget
+#   - tmux
+#   - htop
+#   - dos2unix
+
+## Enable ntp time
+ntp:
+  enabled: true
+
+## Uncomment below to trigger a reboot before finalizing cloud-init
+power_state:
+  mode: reboot
+
+final_message: "Completed cloud-init. You may now attempt login with the default user (ubuntu)"

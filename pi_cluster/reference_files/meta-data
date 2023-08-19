@@ -1,0 +1,7 @@
+#cloud-config
+
+## Use local datasource mode
+dsmode: local
+## Unique identifier for the cloud-init instance.
+#  Changing this will force a re-init.
+instance_id: example
