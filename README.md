@@ -73,6 +73,23 @@ Utilize [`hashi-up`](https://github.com/jsiebens/hashi-up) to create a [`nomad`]
 
 #### >Ansible Setup
 
+- Create inventory files
+  - Copy `onboard/group_vars/all.example.yml` -> `onboard/group_vars/all.yml`
+    - To change Python interpreter on remote, edit `ansible_python_interpreter`
+    - Set a user for connecting to the remote
+      - User must exist on remote already, and host must be configured to connect to that user by SSH.
+      - Check the [Raspberry Pi Setup](#raspberry-pi-setup) section for instructions on SSH setup.
+    - (Optional) Paste your `tailscale` pre-shared key, if cluster will be configured with [Tailscale](https://tailscale.com)
+      - You can create a pre-shared key from Tailscale's web management console
+    - (Optional) Configure git for the remote
+  - Copy `onboard/inventory.example.yml` -> `onboard/inventory.yml`
+    - Edit the host IP address(es)
+  - Copy `rpi-nomad-cluster/group_vars/all.example.yml` -> `rpi-nomad-cluster/group_vars/all.yml`
+    - Edit `ansible_ssh_private_key_file`
+    - Create an SSH key beforehand, write path to the private key
+  - Copy `rpi-nomad-cluster/inventory.example.yaml` -> `rpi-nomad-cluster/inventory.yaml`
+    - Set host IP address(es)
+
 ## Links
 
 - [Cloud-init docs](https://cloudinit.readthedocs.io/en/latest/)
