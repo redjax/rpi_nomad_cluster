@@ -1,0 +1,9 @@
+---
+- name: "[All OS Types] [Docker Setup] Get Docker convenience install script"
+  shell: curl -fsSL https://get.docker.com -o get-docker.sh
+  args:
+    creates: "/home/{{remote_host_user}}/get-docker.sh"
+
+- name: "[All OS Types] [Docker Setup] Install Docker"
+  shell: "sh /home/{{ remote_host_user }}/get-docker.sh"
+  become: true

@@ -1,0 +1,17 @@
+---
+- name: "[Debian] [Docker Setup] Install Docker dependencies"
+  apt:
+    name: "{{ docker_depends }}"
+    update_cache: yes
+    force_apt_get: yes
+  become: true
+  when: (ansible_facts['os_family'] == "Debian")
+
+- name: "[Debian] [Docker Setup] Remove python-configparser package"
+  apt:
+    name: "python-configparser"
+    state: absent
+    update_cache: no
+    force_apt_get: yes
+  become: true
+  when: (ansible_facts['os_family'] == "Debian")

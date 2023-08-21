@@ -24,3 +24,12 @@ dev = [
 start = { shell = "cd pi_cluster && pdm run python main.py" }
 
 update-cluster.shell = "cd ansible && pdm run ansible-playbook -i inventories/rpi-nomad-cluster/inventory.yaml plays/maint/update-system.yml --limit autoReboot"
+
+## Prompt for new role path, cd to ansible/ & create role
+#  Note: Path should be relative to ansible/ dir
+new-role.shell = "read -p 'New role path (i.e. roles/common/new-role): ' role_path && cd ansible && pdm run ansible-galaxy init ${role_path}"
+
+## Run the base setup playbook against the cluster.
+#  Note: SSH must be configured on the remote machines before using this.
+#  You should also have edited the inventory.yml file in inventories/rpi-nomad-cluster
+ansible-base-setup = "cd ansible && pdm run ansible-playbook -i inventories/rpi-nomad-cluster/inventory.yml plays/setup/base-setup.yml"

@@ -1,0 +1,6 @@
+---
+- name: Install & configure firewall on remote
+  hosts: all
+
+  roles:
+    - ../../roles/security/firewall-setup

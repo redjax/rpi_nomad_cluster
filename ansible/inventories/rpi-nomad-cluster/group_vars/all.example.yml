@@ -2,9 +2,10 @@
 # Ansible #
 ###########
 ansible_python_interpreter: "/usr/bin/python3"
+pyenv_python_ver: "3.11.4"
 
 ## User for connection. I use a service account, "ansible_svc"
-ansible_ssh_user: "ansible_svc"
+ansible_ssh_user: "ubuntu"
 ## Path to SSH key (note: you must copy this to the host with ssh-copy-id before using Ansible)
 ansible_ssh_private_key_file: "/home/<user>/.ssh/<private_key>"
 

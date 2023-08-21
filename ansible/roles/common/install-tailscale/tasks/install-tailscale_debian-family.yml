@@ -1,0 +1,39 @@
+---
+- name: "[Debian Family] [Tailscale] Install dependencies"
+  become: true
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - curl
+    - apt-transport-https
+  when: ansible_facts['os_family'] == "Debian"
+
+- name: Add Tailscale GPG key
+  apt_key:
+    url: https://pkgs.tailscale.com/stable/{{ ansible_distribution | lower }}/{{ ansible_distribution_release | lower }}.gpg
+    state: present
+  become: true
+  when: ansible_facts['os_family'] == "Debian"
+
+- name: Add Tailscale repository
+  apt_repository:
+    repo: "deb https://pkgs.tailscale.com/stable/{{ ansible_distribution | lower }} {{ ansible_distribution_release | lower }} main"
+    state: present
+    filename: tailscale
+    update_cache: yes
+  become: true
+  when: ansible_facts['os_family'] == "Debian"
+
+- name: Install Tailscale
+  apt:
+    name: tailscale
+    state: present
+    update_cache: yes
+  become: true
+  when: ansible_facts['os_family'] == "Debian"
+
+- name: Authenticate Tailscale with preauth key
+  shell: |
+    sudo tailscale up --authkey {{ tailscale_preauth_key }}
+  become: true

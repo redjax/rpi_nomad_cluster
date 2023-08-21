@@ -1,0 +1,42 @@
+---
+- name: "[Debian Family] [Firewall] Enable ufw"
+  community.general.ufw:
+    state: "enabled"
+    policy: "deny"
+    logging: "on"
+  become: true
+  when: ansible_os_family == "Debian"
+
+- name: "[Debian Family] [Firewall] ufw rules"
+  community.general.ufw:
+    rule: "allow"
+    port: "{{ item }}"
+    proto: "tcp"
+  with_items:
+    - "22"
+    - "80"
+    - "443"
+    # - "9090" # Cockpit
+    # - "8200" # Duplicati web
+  become: true
+  when: ansible_os_family == "Debian"
+
+- name: "[RedHat Family] [Firewall] Enable firewalld"
+  service:
+    name: firewalld
+    state: started
+    enabled: yes
+  become: true
+  when: ansible_facts['os_family'] == "Redhat"
+
+- name: "[RedHat Family] [Firewall] firewalld rules"
+  firewalld:
+    port: "{{ item }}"
+    permanent: yes
+    state: enabled
+  with_items:
+    - "22/tcp"
+    - "80/tcp"
+    - "443/tcp"
+  become: true
+  when: ansible_facts['os_family'] == "RedHat"
