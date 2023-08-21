@@ -23,6 +23,9 @@ dev = [
 [tool.pdm.scripts]
 start = { shell = "cd pi_cluster && pdm run python main.py" }
 
+## Run git branch prune, delete local branches that have been removed from remote
+git-prune.shell = "./prune_branches.sh"
+
 update-cluster.shell = "cd ansible && pdm run ansible-playbook -i inventories/rpi-nomad-cluster/inventory.yaml plays/maint/update-system.yml --limit autoReboot"
 
 ## Prompt for new role path, cd to ansible/ & create role
