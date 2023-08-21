@@ -1,0 +1,7 @@
+---
+- name: Install ufw if not installed
+  apt:
+    name: ufw
+    state: present
+  become: true
+  when: ansible_os_family == "Debian"

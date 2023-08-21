@@ -1,0 +1,19 @@
+---
+# tasks file for ssh-setup
+
+## Get all installed packages
+- name: "[All OS Types] [SSH] Check packages"
+  ansible.builtin.package_facts:
+    manager: auto
+
+- name: "[All OS Types] [SSH] Install OpenSSH-Server"
+  include_tasks: install-ssh.yml
+  when: ("openssh-server" not in ansible_facts.packages)
+
+- name: "[All OS Types] [SSH] Generate SSH keypairs"
+  include_tasks: generate-keys.yml
+  ignore_errors: true
+
+- name: "[All OS Types] [SSH] Fix owner of ~/.ssh dir"
+  include_tasks: fix-ssh-dir-owner.yml
+  ignore_errors: true

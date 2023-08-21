@@ -1,0 +1,8 @@
+---
+# tasks file for update-system
+- include_tasks: update-debian-family.yml
+  when: (ansible_architecture == "aarch64") and (ansible_facts['os_family'] == "Debian")
+
+- include_tasks: reboot-for-updates.yml
+
+- include_tasks: check-uptime.yml

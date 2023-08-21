@@ -1,0 +1,13 @@
+---
+- name: "[DEBIAN] Update apt repo and cache"
+  apt:
+    update_cache: yes
+    force_apt_get: yes
+    cache_valid_time: 3600
+  become: true
+
+- name: "[DEBIAN] Upgrade all packages"
+  apt:
+    upgrade: dist
+    force_apt_get: yes
+  become: true

@@ -1,0 +1,6 @@
+---
+- name: Remove Snaps from Ubuntu OS
+  hosts: all
+
+  roles:
+    - ../roles/common/remove-snaps

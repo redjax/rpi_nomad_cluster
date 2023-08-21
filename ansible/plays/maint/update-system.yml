@@ -1,0 +1,6 @@
+---
+- name: Update remote server, reboot if required
+  hosts: all
+
+  roles:
+    - ../../roles/common/update-system
