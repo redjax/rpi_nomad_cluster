@@ -1,0 +1,28 @@
+---
+## https://github.com/ansible/ansible/blob/devel/examples/hosts.yaml
+
+all:
+  hosts:
+    rpi-cl-srv1:
+      ansible_ssh_host: "192.168.1.xxx"
+    rpi-cl-ag1:
+      ansible_ssh_host: "192.168.1.xxx"
+    rpi-cl-ag2:
+      ansible_ssh_host: "192.168.1.xxx"
+
+hosts:
+  rpi-cl-srv1:
+  rpi-cl-ag1:
+  rpi-cl-ag2:
+
+autoReboot:
+  hosts:
+    rpi-cl-srv1:
+    rpi-cl-ag1:
+    rpi-cl-ag2:
+
+nomadCluster:
+  hosts:
+    rpi-cl-srv1:
+    rpi-cl-ag1:
+    rpi-cl-ag2:
