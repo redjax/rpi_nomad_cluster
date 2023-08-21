@@ -5,6 +5,10 @@
     state: present
   become: true
 
+# - name: "[All OS Types] [Docker Setup] Make {{ remote_host_user }} able to execute Docker commands"
+#   shell: "usermod -aG docker {{ remote_host_user }}"
+#   become: true
+
 - name: "[All OS Types] [Docker Setup] Add remote user: {{ remote_host_user }} to group 'docker'"
   ansible.builtin.user:
     name: "{{ remote_host_user }}"

@@ -11,7 +11,8 @@
     - ../../roles/common/install-default-packages
     - ../../roles/common/install-tmux
     - ../../roles/common/install-tailscale
-    # - ../../roles/common/install-pipx
+    - ../../roles/common/install-pyenv
+    - ../../roles/common/install-pipx
     - ../../roles/common/install-docker
     - ../../roles/common/configure-zswap
     - ../../roles/common/configure-git

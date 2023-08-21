@@ -1,0 +1,8 @@
+---
+- name: "[All OS Types] [Pyenv Setup] Get Pyenv convenience install script"
+  shell: curl -fsSL https://pyenv.run -o get-pyenv.sh
+  args:
+    creates: "/home/{{ remote_host_user }}/get-pyenv.sh"
+
+- name: "[All OS Types] [Pyenv Setup] Install Pyenv"
+  shell: "sh /home/{{ remote_host_user }}/get-pyenv.sh"

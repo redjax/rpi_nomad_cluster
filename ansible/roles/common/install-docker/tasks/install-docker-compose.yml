@@ -1,7 +1,4 @@
 ---
-- name: "[All OS Types] [Docker Setup] Make {{ remote_host_user }} able to execute Docker commands"
-  shell: "usernmod -aG docker {{ remote_host_user }}"
-
 - name: "[All OS Types] [Docker Setup] Install docker-compose"
   shell: pip3 -v install docker-compose
   args:
