@@ -22,3 +22,5 @@ dev = [
 
 [tool.pdm.scripts]
 start = { shell = "cd pi_cluster && pdm run python main.py" }
+
+update-cluster.shell = "cd ansible && pdm run ansible-playbook -i inventories/rpi-nomad-cluster/inventory.yaml plays/maint/update-system.yml --limit autoReboot"
