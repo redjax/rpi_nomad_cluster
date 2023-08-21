@@ -1,8 +1,0 @@
----
-- name: Install Docker
-  hosts: all
-
-  vars_files:
-
-  roles:
-    - ../../roles/container/docker-setup

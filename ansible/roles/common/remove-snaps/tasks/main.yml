@@ -1,0 +1,4 @@
+---
+- name: "[Debian Family] [Snap] Remove snaps"
+  include_tasks: remove-snaps.yml
+  when: ansible_facts['distribution'] == "Ubuntu"

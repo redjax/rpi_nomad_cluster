@@ -1,0 +1,23 @@
+---
+## Debian
+- name: Install required packages on Raspberry Pi running a Debian family OS
+  become: true
+  apt:
+    state: present
+    name: "{{ item }}"
+  with_items:
+    - "htop"
+    - "git"
+    - "dos2unix"
+    - "wget"
+    - "curl"
+    - "tmux"
+    - "unzip"
+    - "zip"
+    - "ncdu"
+    - "arp-scan"
+    - "python3-pip"
+    - "python3-venv"
+    - "python3-argcomplete"
+    - "openssh-server"
+  when: ansible_facts['os_family'] == "Debian"

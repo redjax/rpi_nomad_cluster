@@ -1,0 +1,8 @@
+---
+- name: "Set owner of {{ remote_ssh_path }} to {{ remote_host_user }}:{{ remote_host_user }}"
+  file:
+    dest: "{{ remote_ssh_path }}"
+    owner: "{{ remote_host_user }}"
+    group: "{{ remote_host_user }}"
+    recurse: yes
+  become: true

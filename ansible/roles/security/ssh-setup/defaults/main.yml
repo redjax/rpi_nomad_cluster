@@ -1,0 +1,4 @@
+---
+# defaults file for ssh-setup
+
+remote_ssh_path: "/home/{{ remote_host_user }}/.ssh"

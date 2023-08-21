@@ -1,0 +1,47 @@
+---
+- name: "[All OS Types] [Tmux] Check if .tmux.conf exists"
+  stat:
+    path: "/home/{{ remote_host_user }}/tmux.conf"
+  become: true
+  register: tmuxconf
+
+- name: "[All OS Types] [Tmux] Check if .tmux exists"
+  stat:
+    path: "/home/{{ remote_host_user }}/.tmux"
+  become: true
+  register: tmuxdir
+
+- name: "[All OS Types] [Tmux] Check if .tmux.bak exists"
+  stat:
+    path: "/home/{{ remote_host_user }}/.tmux.bak"
+  become: true
+  register: tmuxbakdir
+
+## Tasks
+
+- name: "[All OS Types] [Tmux] Create .tmux.conf"
+  template:
+    src: .tmux.conf.j2
+    dest: "/home/{{ remote_host_user }}/.tmux.conf"
+    owner: "{{ remote_host_user }}"
+    group: "{{ remote_host_user }}"
+    mode: "0775"
+  become: true
+
+- name: "[All OS Types] [Tmux] Create .tmux directory"
+  file:
+    path: "/home/{{ remote_host_user }}/.tmux"
+    mode: "0755"
+    state: directory
+  become: true
+  when: not tmuxdir.stat.exists
+
+- name: "[All OS Types] [Tmux] Set owner of remote files to {{ remote_host_user }}:{{ remote_host_user }}"
+  file:
+    dest: "/home/{{ remote_host_user }}/.tmux"
+    owner: "{{ remote_host_user }}"
+    group: "{{ remote_host_user }}"
+    mode: "0755"
+    recurse: true
+  become: true
+  ignore_errors: true
