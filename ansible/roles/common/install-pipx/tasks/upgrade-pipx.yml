@@ -1,4 +1,0 @@
----
-- name: "[All OS Types] [Pipx] Update/upgrade pipx"
-  shell: |
-    /usr/bin/python3 -m pip install --user -U pipx

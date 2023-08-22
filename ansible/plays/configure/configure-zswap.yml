@@ -1,0 +1,6 @@
+---
+- name: "[ARMx64 Arch] Configure ZSWAP for improved performance on aarch64 devices (i.e. Raspberry Pi 4+)"
+  hosts: all
+
+  roles:
+    - ../../roles/common/configure/configure-zswap

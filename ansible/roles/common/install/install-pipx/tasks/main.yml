@@ -1,0 +1,8 @@
+---
+# tasks file for roles/common/install-pipx
+
+# - name: "[All OS Types] [Pipx] Install pipx dependencies"
+#   include_tasks: install-dependencies.yml
+
+- name: "[All OS Types] [Pipx] Install pipx"
+  include_tasks: install-pipx.yml

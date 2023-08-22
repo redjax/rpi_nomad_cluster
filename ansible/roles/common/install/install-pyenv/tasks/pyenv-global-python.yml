@@ -1,0 +1,31 @@
+---
+# - name: "[All OS Types] [Pyenv Setup] Initialize Pyenv"
+#   # shell: "/home/{{ remote_host_user }}/.pyenv/bin/pyenv init"
+#   become: true
+#   become_user: "{{ remote_host_user }}"
+#   command: pyenv init
+
+- name: "[All OS Types] [Pyenv Setup] Update Pyenv versions"
+  become: true
+  become_user: "{{ remote_host_user }}"
+  command: "/home/{{ remote_host_user }}/.pyenv/bin/pyenv update"
+
+- name: "[All OS Types] [Pyenv Setup] Install environment, Python version: {{ pyenv_python_ver }} (SLOW operation)"
+  # shell: "/home/{{ remote_host_user }}/.pyenv/bin/pyenv install {{ pyenv_python_ver }}"
+  become: true
+  become_user: "{{ remote_host_user }}"
+  command: "/home/{{ remote_host_user }}/.pyenv/bin/pyenv install {{ pyenv_python_ver }} --skip-existing"
+
+- name: "[All OS Types] [Pyenv Setup] Set global Python to pyenv version {{ pyenv_python_ver }}"
+  become: true
+  become_user: "{{ remote_host_user }}"
+  command: "/home/{{ remote_host_user }}/.pyenv/bin/pyenv global {{ pyenv_python_ver }}"
+# - name: "[All OS Types] [Pyenv Setup] Set local Python to pyenv version {{ pyenv_python_ver }}"
+#   become: true
+#   become_user: "{{ remote_host_user }}"
+#   command: "/home/{{ remote_host_user }}/.pyenv/bin/pyenv local {{ pyenv_python_ver }}"
+
+# - name: "[All OS Types] [Pyenv Setup] Set shell Python to pyenv version {{ pyenv_python_ver }}"
+#   become: true
+#   become_user: "{{ remote_host_user }}"
+#   command: "/home/{{ remote_host_user }}/.pyenv/bin/pyenv shell {{ pyenv_python_ver }}"

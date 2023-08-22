@@ -1,5 +1,0 @@
----
-- name: "[All OS Types] [Docker Setup] Install docker-compose"
-  shell: pip3 -v install docker-compose
-  args:
-    creates: "/usr/local/bin/docker-compose"

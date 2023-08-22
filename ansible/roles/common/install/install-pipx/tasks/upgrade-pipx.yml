@@ -1,0 +1,12 @@
+---
+- name: "[All OS Types] [Pipx] Update/upgrade pipx"
+  become: true
+  become_user: "{{ remote_host_user }}"
+  environment:
+    PATH: "{{ lookup('env', 'PATH') }}:$HOME/.pyenv/bin"
+  shell: |
+    source $HOME/.bashrc
+    pyenv shell {{ pyenv_python_ver }}
+    eval "$(pyenv init -)"
+    pip install --user pipx
+    $HOME/.pyenv/shims/pipx ensurepath
