@@ -35,4 +35,4 @@ new-role.shell = "read -p 'New role path (i.e. roles/common/new-role): ' role_pa
 ## Run the base setup playbook against the cluster.
 #  Note: SSH must be configured on the remote machines before using this.
 #  You should also have edited the inventory.yml file in inventories/rpi-nomad-cluster
-ansible-base-setup = "cd ansible && pdm run ansible-playbook -i inventories/rpi-nomad-cluster/inventory.yml plays/setup/base-setup.yml"
+ansible-base-setup.cmd = "ansible-playbook -i ansible/inventories/rpi-nomad-cluster/inventory.yaml ansible/plays/setup/base-setup.yml"
