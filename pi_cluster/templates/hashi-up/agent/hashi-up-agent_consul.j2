@@ -1,0 +1,7 @@
+hashi-up consul install \
+  --ssh-target-addr {{ cluster_agent_ip }} \
+  --ssh-target-user {{ ssh_target_user }} \
+  --ssh-target-key "{{ ssh_target_key }}" \
+  --advertise-addr {% raw %}"{{ GetInterfaceIP \"eth0\" }}"{% endraw %} \
+  --bind-addr {% raw %}"{{ GetInterfaceIP \"eth0\" }}"{% endraw %} \
+  --retry-join {{ cluster_server_ip }}

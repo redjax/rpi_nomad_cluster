@@ -1,9 +1,12 @@
 from __future__ import annotations
 
-from typing import Optional, Union
+from typing import Optional
 from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader, Template
+from domain.template import HashiTemplatesList
+
+from loguru import logger as log
 
 
 def get_templates(
@@ -42,12 +45,16 @@ def load_template_dir(template_dir_path: str = None) -> FileSystemLoader:
     """
     if not template_dir_path:
         # log.debug("template_dir_path value empty. Skipping.")
-        print("t[DEBUG] emplate_dir_path value empty. Skipping.")
-        pass
+        raise Exception("Missing template_dir_path value")
 
-    # log.debug(f"Creating template loader for dir: [{template_dir_path}]")
-    print(f"[DEBUG] Creating template loader for dir: [{template_dir_path}]")
-    _loader = FileSystemLoader(searchpath=template_dir_path)
+    log.debug(f"Creating template loader for dir: [{template_dir_path}]")
+
+    try:
+        _loader = FileSystemLoader(searchpath=template_dir_path)
+    except Exception as exc:
+        raise Exception(
+            f"Unhandled exception creating FileSystemLoader for template path: {template_dir_path}. Details: {exc}"
+        )
 
     return _loader
 
@@ -59,13 +66,14 @@ def create_loader_env(_loader: FileSystemLoader = None) -> Environment:
     The environment is used to pass data and output a templated file.
     """
     if not _loader:
-        # log.debug(f"_loader value empty. Skipping.")
-        print(f"[DEBUG] _loader value empty. Skipping.")
+        raise ValueError("Missing _loader value")
 
-    # log.debug(f"Creating template environment for loader.")
-    print(f"[DEBUG] Creating template environment for loader.")
+    log.debug("Creating template environment for loader.")
 
-    _env = Environment(loader=_loader)
+    try:
+        _env = Environment(loader=_loader)
+    except Exception as exc:
+        raise Exception(f"Unhandled exception creating loader env. Details: {exc}")
 
     return _env
 
@@ -89,3 +97,38 @@ def render_template_to_file(
 
     with open(_outfile, "w") as _out:
         _out.write(_render)
+
+
+def load_hashi_up_templates(templates: list[Path] = []) -> HashiTemplatesList:
+    """Sort a list of Agent & Server templates into a HashiTemplates object."""
+    templates_dict: dict[str, list[Path]] = {"servers": [], "agents": []}
+
+    if not templates:
+        raise ValueError("Missing list of templates")
+    if not isinstance(templates, list):
+        raise TypeError(
+            f"Invalid type for templates: ({type(templates)}). Must be a list of Path objects"
+        )
+    for _t in templates:
+        if not isinstance(_t, Path):
+            raise TypeError(
+                f"Invalid type for list object: ({type(_t)}). Must be of type Path"
+            )
+
+    for _templ in templates:
+        if _templ.parent.name == "agent":
+            templates_dict["agents"].append(_templ)
+        elif _templ.parent.name == "server":
+            templates_dict["servers"].append(_templ)
+        else:
+            log.warning(Exception(f"Unknown parent dir: {_templ.parent.name}"))
+            pass
+
+    try:
+        templates: HashiTemplatesList = HashiTemplatesList(**templates_dict)
+    except Exception as exc:
+        raise Exception(
+            f"Unhandled exception converting loaded templates dict to HashiTemplates class instance. Details: {exc}"
+        )
+
+    return templates

@@ -1,0 +1,6 @@
+hashi-up nomad install \
+  --ssh-target-addr {{ cluster_agent_ip }} \
+  --ssh-target-user {{ ssh_user }} \
+  --ssh-target-key "{{ ssh_target_key }}" \
+  --client \
+  --advertise {% raw %}"{{ GetInterfaceIP \"eth0\" }}"{% endraw %}
