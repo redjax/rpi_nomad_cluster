@@ -1,0 +1,9 @@
+---
+- name: "[All OS Types] [Hashi-Up] Get hashi-up convenience install script"
+  shell: "curl -fsSL https://get.hashi-up.dev -o get-hashi-up.sh"
+  args:
+    creates: "/home/{{ remote_host_user}}/get-hashi-up.sh"
+
+- name: "[All OS Types] [Hashi-Up] Install get-hashi-up.sh"
+  shell: "sh /home/{{ remote_host_user }}/get-hashi-up.sh"
+  become: true
