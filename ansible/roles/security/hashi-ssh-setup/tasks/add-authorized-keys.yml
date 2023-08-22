@@ -1,0 +1,17 @@
+---
+- name: "[All OS Types] [SSH] Check for existence of /home/{{ remote_host_user }}/.ssh/hashi-pi_id_rsa.pub"
+  stat:
+    path: "/home/{{ remote_host_user }}/.ssh/hashi-pi_id_rsa.pub"
+  register: hashi_pubkey
+
+- name: "[All OS Types] [SSH] Read /home/{{ remote_host_user }}/.ssh/authorized_keys file contents"
+  ansible.builtin.shell: "cat /home/{{ remote_host_user }}/.ssh/authorized_keys"
+  register: authorized_keys_contents
+  changed_when: false
+
+- name: "[All OS Types] [SSH] Append cluster SSH key to authorized_keys"
+  authorized_key:
+    user: "{{ remote_host_user }}"
+    state: present
+    key: "{{ lookup('file', 'files/hashi-pi_id_rsa.pub') }}"
+  when: hashi_pubkey.stat.exists and authorized_keys_contents.stdout.find(lookup('file', 'files/hashi-pi_id_rsa.pub')) == -1

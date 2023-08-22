@@ -1,0 +1,6 @@
+---
+- name: "Configure SSH keys for hashi-up utility"
+  hosts: all
+
+  roles:
+    - ../../roles/security/hashi-ssh-setup
