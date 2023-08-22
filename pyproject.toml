@@ -21,6 +21,10 @@ dev = [
 ]
 
 [tool.pdm.scripts]
+## Export requirement scripts
+#  Export production requirements
+export = { cmd = "pdm export --prod -o requirements.txt --without-hashes" }
+
 start = { shell = "cd pi_cluster && pdm run python main.py" }
 
 ## Run git branch prune, delete local branches that have been removed from remote
