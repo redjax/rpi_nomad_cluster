@@ -25,6 +25,6 @@ git_user_email: "no@no.com"
 # Cluster #
 ###########
 
-cl_srv1_ip: "192.168.1.60"
-cl_ag1_ip: "192.168.1.61"
-cl_ag2_ip: "192.168.1.62"
+cl_srv1_ip: "192.168.1.xxx"
+cl_ag1_ip: "192.168.1.xxx"
+cl_ag2_ip: "192.168.1.xxx"
