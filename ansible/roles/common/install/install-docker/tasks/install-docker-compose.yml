@@ -1,5 +1,7 @@
 ---
-- name: "[All OS Types] [Docker Setup] Install docker-compose"
-  shell: pip3 -v install docker-compose
-  args:
-    creates: "/usr/local/bin/docker-compose"
+- name: "[Debian] [Docker Setup] Install Docker Compose"
+  apt:
+    name: docker-compose-plugin
+    state: present
+  become: true
+  when: ansible_facts['os_family'] == "Debian"
