@@ -1,0 +1,6 @@
+---
+- name: Uninstall Pyenv
+  hosts: all
+
+  roles:
+    - ../../roles/common/uninstall/uninstall-pyenv

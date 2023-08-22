@@ -1,0 +1,14 @@
+---
+- name: "[All OS Types] [Pipx Setup] Install virtualenv in pyenv environment"
+  pip:
+    name: virtualenv
+    executable: "{{ ansible_env.HOME }}/.pyenv/versions/{{ pyenv_python_ver }}/bin/pip"
+    state: latest
+
+- name: "[Debian] [Pipx Setup] Install required packages"
+  apt:
+    name:
+      - python3-pip
+      - python3-venv
+    state: latest
+  when: ansible_facts['os_family'] == "Debian"

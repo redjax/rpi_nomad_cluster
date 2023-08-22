@@ -1,0 +1,12 @@
+---
+- name: "[All OS Types] [Pipx Setup] Install pipx using Pyenv's pip"
+  pip:
+    name: pipx
+    executable: "{{ ansible_env.HOME }}/.pyenv/versions/{{ pyenv_python_ver }}/bin/pip"
+    state: latest
+
+- name: "[All OS Types] [Pipx Setup] Add pipx to PATH"
+  lineinfile:
+    dest: "{{ ansible_env.HOME }}/.bashrc"
+    line: "{{ lookup('ansible.builtin.template', 'bashrc_pipx.j2') }}"
+    state: present

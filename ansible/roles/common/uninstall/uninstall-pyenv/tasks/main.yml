@@ -1,0 +1,3 @@
+---
+# tasks file for uninstall-pyenv
+- include_tasks: uninstall-pyenv.yml

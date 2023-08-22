@@ -3,4 +3,4 @@
   hosts: all
 
   roles:
-    - ../../roles/common/install-pyenv
+    - ../../roles/common/install/install-pyenv

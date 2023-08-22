@@ -1,0 +1,8 @@
+---
+- name: Gather the package facts
+  ansible.builtin.package_facts:
+    manager: auto
+
+- name: "[Debian Family] [Snap] Remove snaps"
+  include_tasks: remove-snaps.yml
+  when: (ansible_facts['distribution'] == "Ubuntu") and ("snap" in ansible_facts.packages)

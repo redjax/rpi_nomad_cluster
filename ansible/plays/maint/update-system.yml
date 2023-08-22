@@ -3,4 +3,4 @@
   hosts: all
 
   roles:
-    - ../../roles/common/update-system
+    - ../../roles/security/update-system

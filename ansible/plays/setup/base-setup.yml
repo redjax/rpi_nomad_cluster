@@ -4,15 +4,15 @@
   hosts: all
 
   roles:
-    - ../../roles/common/update-system
-    - ../../roles/common/remove-snaps
+    - ../../roles/security/update-system
+    - ../../roles/common/configure/remove-snaps
     - ../../roles/security/ssh-setup
     - ../../roles/security/firewall-setup
-    - ../../roles/common/install-default-packages
-    - ../../roles/common/install-tmux
-    - ../../roles/common/install-tailscale
-    - ../../roles/common/install-pyenv
-    - ../../roles/common/install-pipx
-    - ../../roles/common/install-docker
-    - ../../roles/common/configure-zswap
-    - ../../roles/common/configure-git
+    - ../../roles/common/install/install-default-packages
+    - ../../roles/common/install/install-tmux
+    - ../../roles/common/install/install-tailscale
+    - ../../roles/common/install/install-pyenv
+    - ../../roles/common/install/install-pipx
+    - ../../roles/common/install/install-docker
+    - ../../roles/common/configure/configure-zswap
+    - ../../roles/common/configure/configure-git
