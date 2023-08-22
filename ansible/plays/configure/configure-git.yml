@@ -1,0 +1,6 @@
+---
+- name: "[All OS Types] [Git] Setup Git"
+  hosts: all
+
+  roles:
+    - ../../roles/common/configure/configure-git
