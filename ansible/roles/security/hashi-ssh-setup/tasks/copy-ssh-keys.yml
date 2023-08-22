@@ -1,0 +1,28 @@
+---
+- name: "[All OS Types] [SSH] Check for existence of /home/{{ remote_host_user }}/.ssh/hashi-pi_id_rsa"
+  stat:
+    path: "/home/{{ remote_host_user }}/.ssh/hashi-pi_id_rsa"
+  register: hashi_privkey
+
+- name: "[All OS Types] [SSH] Check for existence of /home/{{ remote_host_user }}/.ssh/hashi-pi_id_rsa.pub"
+  stat:
+    path: "/home/{{ remote_host_user }}/.ssh/hashi-pi_id_rsa.pub"
+  register: hashi_pubkey
+
+- name: "[All OS Types] [SSH] Copy SSH private key to remote"
+  copy:
+    src: "hashi-pi_id_rsa"
+    dest: "/home/{{ remote_host_user }}/.ssh/hashi-pi_id_rsa"
+    mode: "0600"
+    owner: "{{ remote_host_user }}"
+    group: "{{ remote_host_user }}"
+  when: not hashi_privkey.stat.exists
+
+- name: "[All OS Types] [SSH] Copy SSH public key to remote"
+  copy:
+    src: "hashi-pi_id_rsa.pub"
+    dest: "/home/{{ remote_host_user }}/.ssh/hashi-pi_id_rsa.pub"
+    mode: "0600"
+    owner: "{{ remote_host_user }}"
+    group: "{{ remote_host_user }}"
+  when: not hashi_pubkey.stat.exists

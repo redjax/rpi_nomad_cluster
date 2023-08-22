@@ -1,0 +1,17 @@
+Host rpi-cl-srv1
+    HostName {{ cl_srv1_ip }}
+    User {{ remote_host_user }}
+    IdentityFile ~/.ssh/hashi-pi_id_rsa
+    StrictHostKeyChecking no
+
+Host rpi-cl-ag1
+    HostName {{ cl_ag1_ip }}
+    User {{ remote_host_user }}
+    IdentityFile ~/.ssh/hashi-pi_id_rsa
+    StrictHostKeyChecking no
+
+Host rpi-cl-ag2
+    HostName {{ cl_ag2_ip }}
+    User {{ remote_host_user }}
+    IdentityFile ~/.ssh/hashi-pi_id_rsa
+    StrictHostKeyChecking no

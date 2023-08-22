@@ -1,0 +1,6 @@
+---
+# tasks file for hashi-ssh-setup
+- include_tasks: copy-ssh-keys.yml
+- include_tasks: add-authorized-keys.yml
+- include_tasks: update-known-hosts.yml
+- include_tasks: edit-ssh-config.yml
