@@ -126,3 +126,4 @@ This project uses [Ansible](https://www.ansible.com) to automate setup of the Pi
 - [Jorge Sancho Personal Blog: Raspberry cluster up and running](https://jslarraz.es/blog_page.html?_id=2022-10-25)
 - [Github: mjpitz/rpi-clout-init reference repo](https://github.com/mjpitz/rpi-cloud-init/tree/main)
 - [Github: timebertt/pi-cloud-init reference repo](https://github.com/timebertt/pi-cloud-init/tree/master)
+- [Building a Nomad Cluster on Raspberry Pi Running Ubuntu Server](https://johansiebens.dev/posts/2020/08/building-a-nomad-cluster-on-raspberry-pi-running-ubuntu-server/)

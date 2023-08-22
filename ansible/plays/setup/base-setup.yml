@@ -16,3 +16,4 @@
     - ../../roles/common/install/install-docker
     - ../../roles/common/configure/configure-zswap
     - ../../roles/common/configure/configure-git
+    - ../../roles/common/install/install-hashi-up
