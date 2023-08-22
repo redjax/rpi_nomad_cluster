@@ -1,0 +1,6 @@
+---
+- name: "Install Hashi-Up utility"
+  hosts: all
+
+  roles:
+    - ../../roles/common/install/install-hashi-up
