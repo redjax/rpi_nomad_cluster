@@ -15,9 +15,17 @@ Utilize [`hashi-up`](https://github.com/jsiebens/hashi-up) to create a [`nomad`]
   	- Hostname: rpi-cl-ag2
   	- OS: Raspbian Lite x64
 
-## Notes
+## Requirements
 
-### Setup instructions
+- [PDM](https://pdm.fming.dev/latest/)
+  - If you're not using PDM, you can run `pip install -r requirements.txt`
+    - (Optional, recommended) Create a virtual environment:
+      - `venv .venv`
+      - `. venv/scripts/activate`
+      - `pip install -r requirements.txt`
+- A `BASH` shell
+
+## Setup instructions
 
 - Requirements:
   - [`hashi-up`](https://github.com/jsiebens/hashi-up)
@@ -25,7 +33,7 @@ Utilize [`hashi-up`](https://github.com/jsiebens/hashi-up) to create a [`nomad`]
     - On the server, generate a key with `ssh-keygen`, i.e. `$ ssh-keygen -t rsa -b 4096 -f ~/.ssh/rpi_cl_id_rsa`
     - For some reason, even when the key is added to the remote during the `cloud-init` phase, I've found I still need to copy the ID with `ssh-copy-id -i ~/.ssh/<cluster_ssh_key> <user>@<rpi-host>` for each new server/agent
 
-#### >Raspberry Pi Setup
+### >Raspberry Pi Setup
 
 - Choose 3 microSD cards of the same capacity & speed
 - Use the [Raspberry Pi Imager](https://www.raspberrypi.com/software/) to write the `Ubuntu Server <major_ver>.<minor_ver> x64` image to each SD card
@@ -71,7 +79,25 @@ Utilize [`hashi-up`](https://github.com/jsiebens/hashi-up) to create a [`nomad`]
       IdentityFile ~/.ssh/private_key
     ```
 
-#### >Ansible Setup
+### >Ansible Setup
+
+This project uses [Ansible](https://www.ansible.com) to automate setup of the Pi cluster. The [ansible/](./ansible/) directory stores:
+
+- [inventories](./ansible/inventories/):
+  - Inventory files are where the Raspberry Pi hosts are configured
+  - On a fresh clone, make live copies of:
+    - [rpi-nomad-cluster](./ansible/inventories/rpi-nomad-cluster/)'s [`inventory.example.yaml`](./ansible/inventories/rpi-nomad-cluster/inventory.example.yaml) -> `inventory.yaml`.
+    - [rpi-nomad-cluster/group_vars](./ansible/inventories/rpi-nomad-cluster/group_vars/)'s [`all.example.yml`](./ansible/inventories/rpi-nomad-cluster/group_vars/all.example.yml) -> `all.yml`
+- [plays](./ansible/plays/):
+  - Store Ansible playbooks
+  - These playbooks organize Ansible Roles into repeatable automations
+  - Example: [`base-setup.yml`](./ansible/plays/setup/base-setup.yml) combines multiple roles in a specific order to automate the initial setup of a new cluster host.
+    - This configuration is the base "shared" configuration that *all* hosts in the cluster will share
+    - Any agent or server-specific configurations should be defined separately.
+- [roles](./ansible/roles/):
+  - [Ansible Roles](https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_reuse_roles.html) let you automatically load related vars, files, tasks, handlers, and other Ansible artifacts based on a known file structure. After you group your content in roles, you can easily reuse them and share them with other users.
+  - The roles defined in this repository serve to automate setup of packages, configurations, security (firewalls, etc), & more
+  - The roles here are custom, but Ansible has a "role repository" called [Ansible Galaxy](https://galaxy.ansible.com)
 
 - Create inventory files
   - Copy `onboard/group_vars/all.example.yml` -> `onboard/group_vars/all.yml`
