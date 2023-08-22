@@ -20,3 +20,11 @@ tailscale_preauth_key: ""
 git_default_branch_name: "main"
 git_user_name: "gitUsername"
 git_user_email: "no@no.com"
+
+###########
+# Cluster #
+###########
+
+cl_srv1_ip: "192.168.1.60"
+cl_ag1_ip: "192.168.1.61"
+cl_ag2_ip: "192.168.1.62"
