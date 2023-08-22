@@ -2,20 +2,39 @@
 # Ansible #
 ###########
 ansible_python_interpreter: "/usr/bin/python3"
+ansible_ssh_private_key_file: "/home/<user>/.ssh/<private_ansible_ssh_key>"
 
-## User for connection.
-ansible_ssh_user: "ubuntu"
-## Path to SSH key (note: you must copy this to the host with ssh-copy-id before using Ansible)
-ansible_ssh_private_key_file: "/home/<user>/.ssh/<cluster_id_rsa_file>"
+##########
+# Docker #
+##########
+compose_ver: "2.6.0"
+platform: "linux"
+ubuntu_release: "jammy"
+debian_release: "bullseye"
 
-## For path substitution, i.e. "/home/{{ remote_host_user }}"
-remote_host_user: "ubuntu"
+#############
+# Duplicati #
+#############
+duplicati_ver: "2.0.6.3"
 
+###########
+# Node.JS #
+###########
+nodejs_ver: "" ## For Debian-family OS
+nodejs_stream: "" ## For RedHat-family OS
+
+#################
+# Python/Poetry #
+#################
+python_ver: "3.11"
+# poetry_ver: "1.2.2"
+
+##########
+# Webmin #
+##########
+webmin_admin_pass: ""
+
+#############
+# Tailscale #
+#############
 tailscale_preauth_key: ""
-
-#######
-# Git #
-#######
-git_default_branch_name: "main"
-git_user_name: "<git_user>"
-git_user_email: "no@no.com"

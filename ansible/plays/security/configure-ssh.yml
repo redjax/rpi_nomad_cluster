@@ -1,0 +1,6 @@
+---
+- name: Install & configure OpenSSH server on remote
+  hosts: all
+
+  roles:
+    - ../../roles/security/ssh-setup

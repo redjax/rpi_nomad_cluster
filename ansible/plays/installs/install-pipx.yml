@@ -1,0 +1,12 @@
+---
+- name: Install Pyenv
+  hosts: all
+  environment:
+    PYENV_ROOT: "/home/{{ remote_host_user }}/.pyenv"
+    PYENV_VERSION: "{{ pyenv_python_ver }}"
+    PYENV_SHELL: bash
+    PYENV_ACTIVATE_SHELL: 1
+    ansible_python_interpreter: "/home/{{ remote_host_user }}/.pyenv/shims/python"
+
+  roles:
+    - ../../roles/common/install/install-pipx

@@ -1,0 +1,6 @@
+---
+- name: Install Tailscale using pre-auth key defined in inventory's group_vars/all.yml
+  hosts: all
+
+  roles:
+    - ../../roles/common/install/install-tailscale

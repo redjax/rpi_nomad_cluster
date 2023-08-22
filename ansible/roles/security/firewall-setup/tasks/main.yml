@@ -1,0 +1,13 @@
+---
+# tasks file for roles/security/install-firewall
+
+- name: "[Debian Family] [Firewall] Install UFW firewall"
+  include_tasks: install-firewall_debian-family.yml
+  when: ansible_facts['os_family'] == "Debian"
+
+- name: "[RedHat Family] [Firewall] Install Firewalld"
+  include_tasks: install-firewall_redhat-family.yml
+  when: ansible_facts['os_family'] == "RedHat"
+
+- name: "[All OS Types] [Firewall] Configure Firewall"
+  include_tasks: configure-firewall.yml

@@ -1,0 +1,19 @@
+---
+- name: "[Debian] [Pyenv Uninstall] Check for presence of /home/{{ remote_host_user }}/.pyenv"
+  stat:
+    path: "/home/{{ remote_host_user }}/.pyenv"
+  register: dotpyenv_exists
+
+- name: "[Debian] [Pyenv Uninstall] Remove Pyenv init lines from /home/{{ remote_host_user }}/.bashrc"
+  blockinfile:
+    path: "/home/{{ remote_host_user }}/.bashrc"
+    block: "{{ lookup('ansible.builtin.template', 'bashrc_pyenv_init.j2') }}"
+    state: absent
+  when: ansible_facts['os_family'] == "Debian"
+
+- name: "[Debian] [Pyenv Uninstall] Remove /home/{{ remote_host_user }}/.pyenv dir if it exists"
+  file:
+    path: "/home/{{ remote_host_user }}/.pyenv"
+    state: absent
+  become: true
+  when: dotpyenv_exists.stat.exists

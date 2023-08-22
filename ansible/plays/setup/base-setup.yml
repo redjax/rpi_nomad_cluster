@@ -1,0 +1,18 @@
+---
+## Perform minimal/base setup to have a common core configuration
+- name: Configure systems using Ansible Roles
+  hosts: all
+
+  roles:
+    - ../../roles/security/update-system
+    - ../../roles/common/configure/remove-snaps
+    - ../../roles/security/ssh-setup
+    - ../../roles/security/firewall-setup
+    - ../../roles/common/install/install-default-packages
+    - ../../roles/common/install/install-tmux
+    - ../../roles/common/install/install-tailscale
+    - ../../roles/common/install/install-pyenv
+    - ../../roles/common/install/install-pipx
+    - ../../roles/common/install/install-docker
+    - ../../roles/common/configure/configure-zswap
+    - ../../roles/common/configure/configure-git

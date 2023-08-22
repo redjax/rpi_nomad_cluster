@@ -1,0 +1,48 @@
+---
+- name: "[All OS Types] [Tmux] Check if tmux-plugin-manager dir exists"
+  stat:
+    path: "/home/{{ remote_host_user }}/.tmux/plugins/tpm"
+  become: true
+  register: tpmdir
+
+- name: "[All OS Types] [Tmux] Check if tmux-plugin-manager dir is empty"
+  find:
+    paths: "/home/{{ remote_host_user }}/.tmux/plugins/tpm"
+  register: tmuxdir_empty
+  when: tpmdir.stat.exists
+
+- name: "[All OS Types] [Tmux] Check if tmux-continuum dir exists"
+  stat:
+    path: "/home/{{ remote_host_user }}/.tmux/plugins/tmux-continuum"
+  register: continuumdir
+
+- name: "[All OS Types] [Tmux] Check if tmux-continuum dir is empty"
+  find:
+    paths: "/home/{{ remote_host_user }}/.tmux/plugins/tmux-continuum"
+  register: continuumdir_empty
+  when: continuumdir.stat.exists
+
+- name: "[All OS Types] [Tmux] Check if tmux-resurrect dir exists"
+  stat:
+    path: "/home/{{ remote_host_user }}/.tmux/plugins/tmux-resurrect"
+  register: resurrectdir
+
+- name: "[All OS Types] [Tmux] Check if tmux-resurrect dir is empty"
+  find:
+    paths: "/home/{{ remote_host_user }}/.tmux/plugins/tmux-resurrect"
+  register: resurrectdir_empty
+
+## Tasks
+
+- name: "[All OS Types] [Tmux] Clone tmux-plugin-manager from git"
+  git:
+    repo: "https://github.com/tmux-plugins/tpm"
+    version: master
+    dest: "/home/{{ remote_host_user }}/.tmux/plugins/tpm"
+    accept_hostkey: true
+  become: true
+  when: not tpmdir.stat.exists
+
+- name: "[All OS Types] [Tmux] Source .tmux.conf"
+  shell: |
+    tmux new-session -d -s tmux_source "tmux source $HOME/.tmux.conf"

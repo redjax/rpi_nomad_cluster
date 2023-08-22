@@ -1,0 +1,24 @@
+---
+- name: "Check if {{ remote_ssh_path }}/{{ inventory_hostname }}_id_rsa exists"
+  stat:
+    path: "{{ remote_ssh_path }}/{{ inventory_hostname }}_id_rsa"
+  become: true
+  register: host_ssh
+
+- name: Generate SSH keypair
+  community.crypto.openssh_keypair:
+    path: "{{ remote_ssh_path }}/{{ inventory_hostname }}_id_rsa"
+    # (Optional): Add a password
+    # passphrase: some-passphrase
+    # True: Regenerate key if it already exists
+    force: False
+  become: true
+  when: not host_ssh.stat.exists
+
+- name: "Set owner of {{ remote_ssh_path }} to {{ remote_host_user }}:{{ remote_host_user }}"
+  file:
+    dest: "{{ remote_ssh_path }}"
+    owner: "{{ remote_host_user }}"
+    group: "{{ remote_host_user }}"
+    recurse: yes
+  become: true

@@ -1,0 +1,6 @@
+---
+- name: Install Pyenv
+  hosts: all
+
+  roles:
+    - ../../roles/common/install/install-pyenv
