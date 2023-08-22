@@ -1,0 +1,7 @@
+---
+- name: "[All OS Types] [SSH] Add other cluster nodes to /home/{{ remote_host_user }}/.ssh/known_hosts"
+  known_hosts:
+    path: "/home/{{ remote_host_user }}/.ssh/known_hosts"
+    name: "{{ item }}"
+  with_items: "{{ groups['hosts'] }}"
+  when: inventory_hostname != item
