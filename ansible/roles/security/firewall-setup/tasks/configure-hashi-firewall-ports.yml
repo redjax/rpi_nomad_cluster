@@ -1,0 +1,52 @@
+---
+- name: "[Debian Family] [Firewall] Hashicorp Product UFW rules"
+  community.general.ufw:
+    rule: "allow"
+    port: "{{ item.port }}"
+    proto: "{{ item.proto }}"
+  with_items:
+    ## Nomad web
+    - { port: 4646, proto: tcp }
+    ## Nomad RPC
+    - { port: 4647, proto: tcp }
+    ## Nomad Serf WAN
+    - { port: 4648, proto: tcp }
+    - { port: 4648, proto: udp }
+    ## Consul DNS
+    - { port: 8600, proto: tcp }
+    - { port: 8600, proto: udp }
+    ## Consul HTTP
+    - { port: 8500, proto: tcp }
+    ## Consul HTTPS
+    # - { port: 8501, proto: tcp }
+    ## Consul gRPC
+    # - { port: 8502, proto: tcp }
+    ## Consul gRPC TLS
+    # - { port: 8503, proto: tcp }
+    ## Consul LAN Serf
+    - { port: 8301, proto: tcp }
+    - { port: 8301, proto: udp }
+    - { port: 8301, proto: tcp }
+    - { port: 8301, proto: udp }
+    ## Consul WAN Serf
+    - { port: 8302, proto: tcp }
+    - { port: 8302, proto: udp }
+    ## Consul Server RCP
+    - { port: 8300, proto: tcp }
+  become: true
+  when: ansible_os_family == "Debian"
+
+- name: "[Debian] [Firewall] Allow Consul sidecar proxy range"
+  community.general.ufw:
+    rule: allow
+    port: "{{ item }}"
+    proto: tcp
+  with_sequence: start=21000 end=21255
+  become: true
+  when: ansible_os_family == "Debian"
+
+- name: "[Debian] [Firewall] Reload UFW"
+  ansible.builtin.ufw:
+    state: reloaded
+  become: true
+  when: ansible_os_family == "Debian"
