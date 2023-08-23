@@ -1,15 +1,15 @@
+from __future__ import annotations
+
 from constants import (
-    hashi_cluster_pubkey,
+    default_template_dict_list,
     hashi_cluster_privkey,
+    hashi_cluster_pubkey,
     host_privkey,
     host_pubkey,
-    default_template_dict_list,
 )
 from domain.ssh import SSHKeyHandler, SSHKeyPair
 from domain.template import HashiTemplate, HashiTemplatesList
-
 from loguru import logger as log
-
 
 def get_ssh_keys(
     # private_key_path: str = hashi_cluster_privkey,
@@ -33,7 +33,6 @@ def get_server_agent_templates(
     Uses default dicts defined in constants.py. Override by passing a new
     list of template dict objects for template_dicts.
     """
-
     servers: list[HashiTemplate] = []
     agents: list[HashiTemplate] = []
 

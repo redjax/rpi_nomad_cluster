@@ -1,9 +1,10 @@
+from __future__ import annotations
+
 from utils.jinja_utils import (
+    create_loader_env,
     get_templates,
     load_template_dir,
-    create_loader_env,
 )
-
 
 if __name__ == "__main__":
     test_env = {
