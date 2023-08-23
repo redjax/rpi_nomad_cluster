@@ -37,7 +37,10 @@ from dependencies import get_ssh_keys
 init_logger()
 
 
-def get_server_agent_templates() -> HashiTemplatesList:  # -> dict[str, HashiTemplate]:
+def get_server_agent_templates() -> HashiTemplatesList:
+    """Return a list of HashiTemplate class objects.
+
+    Uses default dicts defined in constants.py."""
     server_consul_template: HashiTemplate = HashiTemplate(**server_consul_template_dict)
     server_nomad_template: HashiTemplate = HashiTemplate(**server_nomad_template_dict)
     agent1_nomad_template: HashiTemplate = HashiTemplate(**agent1_nomad_template_dict)
@@ -68,20 +71,20 @@ if __name__ == "__main__":
     log.debug(f"Results: {copy_keys}")
 
     all_templates = get_server_agent_templates()
-    DEBUG_ALL_TEMPLATES = False
+    DEBUG_ALL_TEMPLATES = True
 
     if DEBUG_ALL_TEMPLATES:
         for _srv in all_templates.servers:
             render = _srv.render_template()
             log.debug(f"[{_srv.script_name}] {_srv.template_name} render:\n{render}")
 
-            _srv.to_file()
+            _srv.to_file(output_dir="export/script")
 
         for _ag in all_templates.agents:
             render = _ag.render_template()
             log.debug(f"[{_ag.script_name}] {_ag.template_name} render:\n{render}")
 
-            _ag.to_file()
+            _ag.to_file(output_dir="export/script")
 
     ## Render to file
     for _srv in all_templates.servers:

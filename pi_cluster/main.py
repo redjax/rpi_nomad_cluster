@@ -1,95 +1,98 @@
-from utils.jinja_utils import (
-    get_templates,
-    load_template_dir,
-    create_loader_env,
+import stackprinter
+
+stackprinter.set_excepthook(style="darkbg2")
+
+from pathlib import Path
+from typing import Union
+
+from domain.template import (
+    HashiAgentTemplate,
+    HashiServerTemplate,
+    HashiTemplate,
+    HashiTemplatesList,
 )
+from domain.ssh import SSHKeyHandler, SSHKeyPair
+
+from red_utils.loguru_utils import init_logger
+from loguru import logger as log
+
+from constants import (
+    export_dir,
+    templates_dir,
+    hashi_up_templates_dir,
+    hashi_server_templates_dir,
+    hashi_agent_templates_dir,
+    hashi_cluster_privkey,
+    hashi_cluster_pubkey,
+    server_consul_template_dict,
+    server_nomad_template_dict,
+    agent1_consul_template_dict,
+    agent2_consul_template_dict,
+    agent1_nomad_template_dict,
+    agent2_nomad_template_dict,
+)
+from dependencies import get_ssh_keys
+
+
+init_logger()
+
+
+def get_server_agent_templates() -> HashiTemplatesList:
+    server_consul_template: HashiTemplate = HashiTemplate(**server_consul_template_dict)
+    server_nomad_template: HashiTemplate = HashiTemplate(**server_nomad_template_dict)
+    agent1_nomad_template: HashiTemplate = HashiTemplate(**agent1_nomad_template_dict)
+    agent1_consul_template: HashiTemplate = HashiTemplate(**agent1_consul_template_dict)
+    agent2_consul_template: HashiTemplate = HashiTemplate(**agent2_consul_template_dict)
+    agent2_nomad_template: HashiTemplate = HashiTemplate(**agent2_nomad_template_dict)
+
+    servers = [server_consul_template, server_nomad_template]
+    agents = [
+        agent1_consul_template,
+        agent1_nomad_template,
+        agent2_consul_template,
+        agent2_nomad_template,
+    ]
+
+    _templates = HashiTemplatesList(servers=servers, agents=agents)
+
+    return _templates
+
+
+def demo_run(DEBUG: bool = False):
+    ## Copy SSH keys to filesystem
+    log.info("Copying keys")
+    _keys = get_ssh_keys()
+    log.debug(f"Keys: {_keys}")
+
+    copy_keys = _keys.copy_keys()
+    log.debug(f"Results: {copy_keys}")
+
+    all_templates = get_server_agent_templates()
+
+    if DEBUG:
+        for _srv in all_templates.servers:
+            render = _srv.render_template()
+            log.debug(f"[{_srv.script_name}] {_srv.template_name} render:\n{render}")
+
+            _srv.to_file()
+
+        for _ag in all_templates.agents:
+            render = _ag.render_template()
+            log.debug(f"[{_ag.script_name}] {_ag.template_name} render:\n{render}")
+
+            _ag.to_file()
+
+    ## Render to file
+    for _srv in all_templates.servers:
+        log.debug(f"Rendering {_srv.script_name} to file")
+
+        _srv.to_file(output_dir="export/script")
+
+    for _ag in all_templates.agents:
+        log.debug(f"Rendering {_ag.script_name} to file")
+
+        _ag.to_file(output_dir="export/script")
 
 
 if __name__ == "__main__":
-    test_env = {
-        "network": {
-            "ethernets": [
-                {
-                    "device": "eth0",
-                    "dhcp4": False,
-                    "dhcp6": False,
-                    "address": "192.168.1.60/24",
-                    "gateway": "192.168.1.1",
-                    "nameservers": ["192.168.1.1", "1.1.1.1", "1.0.0.1"],
-                }
-            ]
-        },
-        "meta": {"ds": {"mode": "local"}, "instance": {"id": "rpi-cl-srv1"}},
-        "userdata": {
-            "hostname": "rpi-cl-srv1",
-            "fqdn": "rpi-cl-srv1.home",
-            "manage_hosts": True,
-            "ssh_pass_auth": True,
-            "ssh_pubkeys": ["ssh-rsa pubkey1", "ssh-rsa pubkey2"],
-            "chwpasswd": {
-                "expire": False,
-                "users": [
-                    {
-                        "name": "ubuntu",
-                        "password": "exPas$word",
-                        "type": "hash",
-                    }
-                ],
-            },
-            "packages": {
-                "update": False,
-                "upgrade": False,
-                "install": ["curl", "git", "wget", "dos2unix"],
-            },
-        },
-        "users": [
-            {
-                "default": True,
-                "name": "ubuntu",
-                "shell": "/bin/bash",
-                "passwd": "kjdflojkangloabnlkbgl",
-                "lock_passwd": False,
-                "groups": ["users", "adm", "sudo"],
-                "sudo_str": "ALL=(ALL) NOPASSWD:ALL",
-                "ssh_pubkeys": [
-                    "ssh-rsa pubkey1",
-                    "ssh-rsa pubkey2",
-                    "ssh-rsa pubkey3",
-                ],
-            }
-        ],
-        "run_cmds": [
-            "rm /etc/netplan/50-cloud-init.yaml",
-            "netplan generate",
-            "netplan apply",
-            "localectl set-x11-keymap 'us' pc105",
-            "setupcon -k --force || true",
-        ],
-        "power": {"mode": "reboot"},
-        "final_msg": "cloud-init completed.",
-    }
-
-    _templates = get_templates("templates/")
-    print(f"Templates: {_templates}")
-
-    ## Example: Create a FileSystemLoader to load templates from directory
-    #  then create an Environment to load files from with Environment.get_template(file)
-    #  Use template.render() with a dict of variables for the template.
-    # _loader = FileSystemLoader(searchpath="templates/snippets")
-    _loader = load_template_dir(template_dir_path="templates")
-    # _env = Environment(loader=_loader)
-    _env = create_loader_env(_loader=_loader)
-
-    ## Load network-config template
-    _tmpl_net_file = "snippets/tmpl_network-config.j2"
-    _net_template = _env.get_template(_tmpl_net_file)
-
-    ## Load meta-data template
-    _tmpl_meta_file = "snippets/tmpl_meta-data.j2"
-    _meta_template = _env.get_template(_tmpl_meta_file)
-
-    _net_output = _net_template.render(test_env)
-    print(f"Render network-config:\n\n{_net_output}")
-
-    _meta_output = _meta_template.render(test_env)
-    print(f"Render meta-data:\n\n{_meta_output}")
+    demo_run(DEBUG=False)

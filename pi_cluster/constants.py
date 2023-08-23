@@ -1,4 +1,5 @@
 from loguru import logger as log
+from pathlib import Path
 
 export_dir: str = "export"
 
@@ -10,9 +11,11 @@ hashi_agent_templates_dir: str = f"{hashi_up_templates_dir}/agent"
 hashi_cluster_privkey: str = (
     "../ansible/roles/security/hashi-ssh-setup/files/hashi-pi_id_rsa"
 )
+host_privkey: Path = Path("~/.ssh/hashi-pi_id_rsa").expanduser()
 hashi_cluster_pubkey: str = (
     "../ansible/roles/security/hashi-ssh-setup/files/hashi-pi_id_rsa.pub"
 )
+host_pubkey: Path = Path("~/.ssh/hashi-pi_id_rsa.pub").expanduser()
 
 ## Server Consul
 server_consul_template_dict = {
@@ -21,7 +24,8 @@ server_consul_template_dict = {
     "template_type": "server",
     "cluster_server_ip": "192.168.1.60",
     "ssh_target_user": "ubuntu",
-    "ssh_target_key": hashi_cluster_privkey,
+    # "ssh_target_key": hashi_cluster_privkey,
+    "ssh_target_key": host_privkey,
 }
 
 ## Server Nomad
@@ -31,7 +35,8 @@ server_nomad_template_dict = {
     "template_type": "server",
     "cluster_server_ip": "192.168.1.60",
     "ssh_target_user": "ubuntu",
-    "ssh_target_key": hashi_cluster_privkey,
+    # "ssh_target_key": hashi_cluster_privkey,
+    "ssh_target_key": host_privkey,
 }
 
 ## Agent 1 Consul
@@ -42,7 +47,8 @@ agent1_consul_template_dict = {
     "cluster_server_ip": "192.168.1.60",
     "cluster_agent_ip": "192.168.1.61",
     "ssh_target_user": "ubuntu",
-    "ssh_target_key": hashi_cluster_privkey,
+    # "ssh_target_key": hashi_cluster_privkey,
+    "ssh_target_key": host_privkey,
 }
 
 ## Agent 1 Nomad
@@ -53,7 +59,8 @@ agent1_nomad_template_dict = {
     "cluster_server_ip": "192.168.1.60",
     "cluster_agent_ip": "192.168.1.61",
     "ssh_target_user": "ubuntu",
-    "ssh_target_key": hashi_cluster_privkey,
+    # "ssh_target_key": hashi_cluster_privkey,
+    "ssh_target_key": host_privkey,
 }
 
 ## Agent 2 Consul
@@ -64,7 +71,8 @@ agent2_consul_template_dict = {
     "cluster_server_ip": "192.168.1.60",
     "cluster_agent_ip": "192.168.1.62",
     "ssh_target_user": "ubuntu",
-    "ssh_target_key": hashi_cluster_privkey,
+    # "ssh_target_key": hashi_cluster_privkey,
+    "ssh_target_key": host_privkey,
 }
 
 ## Agent 2 Nomad
@@ -75,5 +83,6 @@ agent2_nomad_template_dict = {
     "cluster_server_ip": "192.168.1.60",
     "cluster_agent_ip": "192.168.1.62",
     "ssh_target_user": "ubuntu",
-    "ssh_target_key": hashi_cluster_privkey,
+    # "ssh_target_key": hashi_cluster_privkey,
+    "ssh_target_key": host_privkey,
 }
