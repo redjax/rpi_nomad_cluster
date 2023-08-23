@@ -106,7 +106,7 @@ class SSHKeyPair:
 
             else:
                 ## Key was found at output_path
-                log.info(f"Key already exists: {output_path.__str__()}")
+                log.debug(f"Key already exists: {output_path.__str__()}")
                 return True
 
         privkey_copy = copy_self_key(

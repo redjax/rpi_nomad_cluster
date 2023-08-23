@@ -1,7 +1,8 @@
 from loguru import logger as log
 from pathlib import Path
 
-export_dir: str = "export"
+export_dir: Path = Path("export")
+scripts_export_dir: Path = Path(f"{export_dir}/scripts")
 
 templates_dir: str = "templates"
 hashi_up_templates_dir: str = f"{templates_dir}/hashi-up"
@@ -86,3 +87,12 @@ agent2_nomad_template_dict = {
     # "ssh_target_key": hashi_cluster_privkey,
     "ssh_target_key": host_privkey,
 }
+
+default_template_dict_list: list[dict[str, dict]] = [
+    server_consul_template_dict,
+    server_nomad_template_dict,
+    agent1_consul_template_dict,
+    agent1_nomad_template_dict,
+    agent2_consul_template_dict,
+    agent2_nomad_template_dict,
+]

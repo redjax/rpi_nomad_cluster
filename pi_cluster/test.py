@@ -18,6 +18,7 @@ from loguru import logger as log
 
 from constants import (
     export_dir,
+    scripts_export_dir,
     templates_dir,
     hashi_up_templates_dir,
     hashi_server_templates_dir,
@@ -30,69 +31,59 @@ from constants import (
     agent2_consul_template_dict,
     agent1_nomad_template_dict,
     agent2_nomad_template_dict,
+    default_template_dict_list,
 )
-from dependencies import get_ssh_keys
-
+from dependencies import get_ssh_keys, get_server_agent_templates
+from utils.shell_utils import execute_rendered_script, execute_all_rendered_scripts
 
 init_logger()
 
 
-def get_server_agent_templates() -> HashiTemplatesList:
-    """Return a list of HashiTemplate class objects.
+def default_setup(
+    ssh_keys: SSHKeyPair = None, templates: HashiTemplatesList = None
+) -> None:
+    if not ssh_keys:
+        raise ValueError("Missing SSHKeyPair object")
+    if not isinstance(ssh_keys, SSHKeyPair):
+        raise TypeError(
+            f"Invalid type for ssh_keys: ({type(ssh_keys)}). Must be of type SSHKeyPair"
+        )
 
-    Uses default dicts defined in constants.py."""
-    server_consul_template: HashiTemplate = HashiTemplate(**server_consul_template_dict)
-    server_nomad_template: HashiTemplate = HashiTemplate(**server_nomad_template_dict)
-    agent1_nomad_template: HashiTemplate = HashiTemplate(**agent1_nomad_template_dict)
-    agent1_consul_template: HashiTemplate = HashiTemplate(**agent1_consul_template_dict)
-    agent2_consul_template: HashiTemplate = HashiTemplate(**agent2_consul_template_dict)
-    agent2_nomad_template: HashiTemplate = HashiTemplate(**agent2_nomad_template_dict)
+    if not templates:
+        raise ValueError("Missing templates list")
+    if not isinstance(templates, HashiTemplatesList):
+        raise TypeError(
+            f"Invalid type for templates: ({type(templates)}). Must be of type HashiTemplatesList"
+        )
 
-    servers = [server_consul_template, server_nomad_template]
-    agents = [
-        agent1_consul_template,
-        agent1_nomad_template,
-        agent2_consul_template,
-        agent2_nomad_template,
-    ]
+    ## Copy SSH keys
+    log.info("Copying SSH keys")
+    copy_keys = _keys.copy_keys()
+    log.info(f"Key copy success: {copy_keys}")
 
-    _templates = HashiTemplatesList(servers=servers, agents=agents)
+    log.info(f"Rendering templates to files in {scripts_export_dir}")
+    ## Render templates to file
+    for _srv in templates.servers:
+        log.debug(f"Rendering {_srv.script_name} to file")
 
-    return _templates
+        _srv.to_file(output_dir=scripts_export_dir)
+
+    for _ag in templates.agents:
+        log.debug(f"Rendering {_ag.script_name} to file")
+
+        _ag.to_file(output_dir=scripts_export_dir)
 
 
 if __name__ == "__main__":
-    ## Copy SSH keys to filesystem
-    log.info("Copying keys")
+    log.info("App start")
+
+    ## Load SSH keys
     _keys = get_ssh_keys()
-    log.debug(f"Keys: {_keys}")
-
-    copy_keys = _keys.copy_keys()
-    log.debug(f"Results: {copy_keys}")
-
+    ## Load templates
     all_templates = get_server_agent_templates()
-    DEBUG_ALL_TEMPLATES = True
 
-    if DEBUG_ALL_TEMPLATES:
-        for _srv in all_templates.servers:
-            render = _srv.render_template()
-            log.debug(f"[{_srv.script_name}] {_srv.template_name} render:\n{render}")
+    ## Perform default setup
+    default_setup(ssh_keys=_keys, templates=all_templates)
 
-            _srv.to_file(output_dir="export/script")
-
-        for _ag in all_templates.agents:
-            render = _ag.render_template()
-            log.debug(f"[{_ag.script_name}] {_ag.template_name} render:\n{render}")
-
-            _ag.to_file(output_dir="export/script")
-
-    ## Render to file
-    for _srv in all_templates.servers:
-        log.debug(f"Rendering {_srv.script_name} to file")
-
-        _srv.to_file(output_dir="export/script")
-
-    for _ag in all_templates.agents:
-        log.debug(f"Rendering {_ag.script_name} to file")
-
-        _ag.to_file(output_dir="export/script")
+    log.info("Executing all rendered scripts")
+    execute_all_rendered_scripts()
