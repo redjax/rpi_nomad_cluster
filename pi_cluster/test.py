@@ -5,7 +5,7 @@ stackprinter.set_excepthook(style="darkbg2")
 from pathlib import Path
 from typing import Union
 
-from domain.ssh import SSHKeyHandler
+from domain.ssh import SSHKeyHandler, SSHKeyPair
 
 from red_utils.loguru_utils import init_logger
 from loguru import logger as log
@@ -30,17 +30,12 @@ if __name__ == "__main__":
     private_key = SSHKeyHandler(input_key_path=hashi_cluster_privkey)
     public_key = SSHKeyHandler(input_key_path=hashi_cluster_pubkey)
 
-    log.debug(f"Private Key: {private_key}")
-    log.debug(
-        f"Private Key output path ({type(private_key.output_path)}): {private_key.output_path}"
-    )
-    log.debug(f"Copy SSH private key success: {private_key.copy_key()}")
+    _keys: SSHKeyPair = SSHKeyPair(private_key=private_key, public_key=public_key)
+    log.debug(f"Keys: {_keys}")
 
-    log.debug(f"Public Key: {public_key}")
-    log.debug(
-        f"Public Key output path ({type(public_key.output_path)}): {public_key.output_path}"
-    )
-    log.debug(f"Copy SSH public key success: {public_key.copy_key()}")
+    log.info("Copying keys")
+    copy_keys = _keys.copy_keys()
+    log.debug(f"Results: {copy_keys}")
 
     """
 

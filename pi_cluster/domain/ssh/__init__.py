@@ -1,1 +1,1 @@
-from .schemas import SSHKeyHandler
+from .schemas import SSHKeyHandler, SSHKeyPair
