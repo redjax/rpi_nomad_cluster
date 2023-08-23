@@ -1,0 +1,9 @@
+---
+- name: "Configure Hashicorp app firewall rules"
+  hosts: all
+
+  tasks:
+    - name: "Import Hashicorp app firewall rules playbook"
+      include_role:
+        name: ../../roles/security/firewall-setup
+        tasks_from: configure-hashi-firewall-ports.yml
