@@ -1,0 +1,79 @@
+from loguru import logger as log
+
+export_dir: str = "export"
+
+templates_dir: str = "templates"
+hashi_up_templates_dir: str = f"{templates_dir}/hashi-up"
+hashi_server_templates_dir: str = f"{hashi_up_templates_dir}/server"
+hashi_agent_templates_dir: str = f"{hashi_up_templates_dir}/agent"
+
+hashi_cluster_privkey: str = (
+    "../ansible/roles/security/hashi-ssh-setup/files/hashi-pi_id_rsa"
+)
+hashi_cluster_pubkey: str = (
+    "../ansible/roles/security/hashi-ssh-setup/files/hashi-pi_id_rsa.pub"
+)
+
+## Server Consul
+server_consul_template_dict = {
+    "template_name": "Server Consul",
+    "template_file": f"{hashi_server_templates_dir}/hashi-up-server_consul.j2",
+    "template_type": "server",
+    "cluster_server_ip": "192.168.1.60",
+    "ssh_target_user": "ubuntu",
+    "ssh_target_key": hashi_cluster_privkey,
+}
+
+## Server Nomad
+server_nomad_template_dict = {
+    "template_name": "Server Nomad",
+    "template_file": f"{hashi_server_templates_dir}/hashi-up-server_nomad.j2",
+    "template_type": "server",
+    "cluster_server_ip": "192.168.1.60",
+    "ssh_target_user": "ubuntu",
+    "ssh_target_key": hashi_cluster_privkey,
+}
+
+## Agent 1 Consul
+agent1_consul_template_dict = {
+    "template_name": "Agent 1 Consul",
+    "template_file": f"{hashi_agent_templates_dir}/hashi-up-agent_consul.j2",
+    "template_type": "agent",
+    "cluster_server_ip": "192.168.1.60",
+    "cluster_agent_ip": "192.168.1.61",
+    "ssh_target_user": "ubuntu",
+    "ssh_target_key": hashi_cluster_privkey,
+}
+
+## Agent 1 Nomad
+agent1_nomad_template_dict = {
+    "template_name": "Agent 1 Nomad",
+    "template_file": f"{hashi_agent_templates_dir}/hashi-up-agent_nomad.j2",
+    "template_type": "agent",
+    "cluster_server_ip": "192.168.1.60",
+    "cluster_agent_ip": "192.168.1.61",
+    "ssh_target_user": "ubuntu",
+    "ssh_target_key": hashi_cluster_privkey,
+}
+
+## Agent 2 Consul
+agent2_consul_template_dict = {
+    "template_name": "Agent 2 Consul",
+    "template_file": f"{hashi_agent_templates_dir}/hashi-up-agent_consul.j2",
+    "template_type": "agent",
+    "cluster_server_ip": "192.168.1.60",
+    "cluster_agent_ip": "192.168.1.62",
+    "ssh_target_user": "ubuntu",
+    "ssh_target_key": hashi_cluster_privkey,
+}
+
+## Agent 2 Nomad
+agent2_nomad_template_dict = {
+    "template_name": "Agent 2 Nomad",
+    "template_file": f"{hashi_agent_templates_dir}/hashi-up-agent_nomad.j2",
+    "template_type": "agent",
+    "cluster_server_ip": "192.168.1.60",
+    "cluster_agent_ip": "192.168.1.62",
+    "ssh_target_user": "ubuntu",
+    "ssh_target_key": hashi_cluster_privkey,
+}
