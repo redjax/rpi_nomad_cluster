@@ -1,1 +1,3 @@
-from .operations import get_logged_in_user, copy_ssh_key
+from __future__ import annotations
+
+from .operations import copy_ssh_key, get_logged_in_user
