@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import stackprinter
 
 stackprinter.set_excepthook(style="darkbg2")
@@ -5,36 +7,34 @@ stackprinter.set_excepthook(style="darkbg2")
 from pathlib import Path
 from typing import Union
 
+from constants import (
+    agent1_consul_template_dict,
+    agent1_nomad_template_dict,
+    agent2_consul_template_dict,
+    agent2_nomad_template_dict,
+    default_template_dict_list,
+    export_dir,
+    hashi_agent_templates_dir,
+    hashi_cluster_privkey,
+    hashi_cluster_pubkey,
+    hashi_server_templates_dir,
+    hashi_up_templates_dir,
+    scripts_export_dir,
+    server_consul_template_dict,
+    server_nomad_template_dict,
+    templates_dir,
+)
+from dependencies import get_server_agent_templates, get_ssh_keys
+from domain.ssh import SSHKeyHandler, SSHKeyPair
 from domain.template import (
     HashiAgentTemplate,
     HashiServerTemplate,
     HashiTemplate,
     HashiTemplatesList,
 )
-from domain.ssh import SSHKeyHandler, SSHKeyPair
-
-from red_utils.loguru_utils import init_logger
 from loguru import logger as log
-
-from constants import (
-    export_dir,
-    scripts_export_dir,
-    templates_dir,
-    hashi_up_templates_dir,
-    hashi_server_templates_dir,
-    hashi_agent_templates_dir,
-    hashi_cluster_privkey,
-    hashi_cluster_pubkey,
-    server_consul_template_dict,
-    server_nomad_template_dict,
-    agent1_consul_template_dict,
-    agent2_consul_template_dict,
-    agent1_nomad_template_dict,
-    agent2_nomad_template_dict,
-    default_template_dict_list,
-)
-from dependencies import get_ssh_keys, get_server_agent_templates
-from utils.shell_utils import execute_rendered_script, execute_all_rendered_scripts
+from red_utils.loguru_utils import init_logger
+from utils.shell_utils import execute_all_rendered_scripts, execute_rendered_script
 
 init_logger()
 

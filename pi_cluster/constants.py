@@ -1,5 +1,8 @@
-from loguru import logger as log
+from __future__ import annotations
+
 from pathlib import Path
+
+from loguru import logger as log
 
 export_dir: Path = Path("export")
 scripts_export_dir: Path = Path(f"{export_dir}/scripts")

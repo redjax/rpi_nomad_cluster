@@ -1,11 +1,13 @@
+from __future__ import annotations
+
 from dataclasses import dataclass, field
 import os
-import shutil
+
 from pathlib import Path
+import shutil
 from typing import Union
 
 from loguru import logger as log
-
 
 @dataclass
 class SSHKeyHandler:

@@ -1,10 +1,12 @@
-from typing import Union
-from pathlib import Path
+from __future__ import annotations
+
 import os
+
+from pathlib import Path
 import shutil
+from typing import Union
 
 from loguru import logger as log
-
 
 def get_logged_in_user() -> str:
     user = os.getlogin()
