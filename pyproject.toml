@@ -24,6 +24,14 @@ dev = [
 ]
 
 [tool.pdm.scripts]
+## Format scripts
+
+lint = { cmd = "black ." }
+# Check only, don't fix
+check = { cmd = "ruff check ." }
+#  Check and fix
+format = { cmd = "ruff check . --fix" }
+
 ## Export requirement scripts
 #  Export production requirements
 export = { cmd = "pdm export --prod -o requirements.txt --without-hashes" }
