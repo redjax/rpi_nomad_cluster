@@ -1,11 +1,13 @@
+from __future__ import annotations
+
 import os
-import subprocess
-from loguru import logger as log
-from typing import Union, Optional
+
 from pathlib import Path
+import subprocess
+from typing import Optional, Union
 
 from constants import scripts_export_dir
-
+from loguru import logger as log
 
 def execute_rendered_script(script_path: Path = None) -> bool:
     """Execute script at script_path.

@@ -1,13 +1,11 @@
 from __future__ import annotations
 
-from typing import Optional
 from pathlib import Path
+from typing import Optional
 
-from jinja2 import Environment, FileSystemLoader, Template
 from domain.template import HashiTemplatesList
-
+from jinja2 import Environment, FileSystemLoader, Template
 from loguru import logger as log
-
 
 def get_templates(
     template_dir: str = None, template_files: list[Path] = []

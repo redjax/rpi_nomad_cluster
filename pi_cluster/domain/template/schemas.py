@@ -1,10 +1,12 @@
+from __future__ import annotations
+
 from dataclasses import dataclass, field
-from pathlib import Path
-from typing import Optional, Union
 import os
 
-from jinja2 import Environment, FileSystemLoader
+from pathlib import Path
+from typing import Optional, Union
 
+from jinja2 import Environment, FileSystemLoader
 
 valid_template_types: list[str] = ["server", "agent"]
 
@@ -149,7 +151,7 @@ class HashiTemplatesList:
 
         if not template_type:
             raise ValueError("Missing input_type")
-        if not template_type in valid_template_types:
+        if template_type not in valid_template_types:
             raise ValueError(
                 f"Invalid template_type: {template_type}. Must be one of {valid_template_types}"
             )
