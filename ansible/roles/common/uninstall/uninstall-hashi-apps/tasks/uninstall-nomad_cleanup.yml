@@ -1,0 +1,36 @@
+---
+- name: "[All OS Types] [Nomad Uninstall] Check for presence of /etc/nomad.d dir"
+  stat:
+    path: "/etc/nomad.d"
+  register: etc_nomad
+
+- name: "[All OS Types] [Nomad Uninstall] Check for presence of /opt/nomad dir"
+  stat:
+    path: "/opt/nomad"
+  register: opt_nomad
+
+- name: "[All OS Types] [Nomad Uninstall] Check for presence of /etc/systemd/system/nomad.service"
+  stat:
+    path: "/etc/systemd/system/nomad.service"
+  register: systemd_nomad
+
+- name: "[All OS Types] [Nomad Uninstall] Remove /etc/nomad.d if present"
+  file:
+    path: "/etc/nomad.d"
+    state: absent
+  become: true
+  when: etc_nomad.stat.exists
+
+- name: "[All OS Types] [Nomad Uninstall] Remove /opt/nomad if present"
+  file:
+    path: "/opt/nomad"
+    state: absent
+  become: true
+  when: opt_nomad.stat.exists
+
+- name: "[All OS Types] [Nomad Uninstall] Remove /etc/systemd/system/nomad.service if present"
+  file:
+    path: "/etc/systemd/system/nomad.service"
+    state: absent
+  become: true
+  when: systemd_nomad.stat.exists
