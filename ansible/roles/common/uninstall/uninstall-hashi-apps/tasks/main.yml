@@ -1,0 +1,19 @@
+---
+# tasks file for roles/common/uninstall/uninstall-hashi-apps
+- name: "[All OS Types] [Hashicorp App Uninstall] Check packages"
+  ansible.builtin.package_facts:
+    manager: auto
+
+- name: "[Debian] [Nomad Uninstall] Uninstall Nomad"
+  include_tasks: uninstall-nomad.yml
+  when: ("nomad" in ansible_facts.packages)
+
+- name: "[All OS Types] [Nomad Uninstall] Cleanup system after Nomad uninstall"
+  include_tasks: uninstall-nomad_cleanup.yml
+
+- name: "[Debian] [Consul Uninstall] Uninstall Consul"
+  include_tasks: uninstall-consul.yml
+  when: ("consul" in ansible_facts.packages)
+
+- name: "[All OS Types] [Consul Uninstall] Cleanup system after Consul uninstall"
+  include_tasks: uninstall-consul_cleanup.yml

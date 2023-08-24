@@ -1,0 +1,15 @@
+---
+- name: "[Debian] [Consul Uninstall] Stop Consul systemd service"
+  systemd:
+    name: consul
+    state: stopped
+    enabled: false
+    daemon_reload: true
+  become: true
+
+- name: "[Debian] [Consul Uninstall] Uninstall Consul"
+  apt:
+    name: consul
+    state: absent
+  become: true
+  when: ansible_facts['os_family'] == "Debian"
