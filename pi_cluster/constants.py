@@ -21,6 +21,9 @@ hashi_cluster_pubkey: str = (
 )
 host_pubkey: Path = Path("~/.ssh/hashi-pi_id_rsa.pub").expanduser()
 
+## Allowed types for HashiTemplate class instances
+valid_template_types: list[str] = ["server", "agent", "nomad_job"]
+
 ## Server Consul
 server_consul_template_dict = {
     "template_name": "Server Consul",
@@ -30,6 +33,7 @@ server_consul_template_dict = {
     "ssh_target_user": "ubuntu",
     # "ssh_target_key": hashi_cluster_privkey,
     "ssh_target_key": host_privkey,
+    "outfile_ext": ".sh",
 }
 
 ## Server Nomad
@@ -41,6 +45,7 @@ server_nomad_template_dict = {
     "ssh_target_user": "ubuntu",
     # "ssh_target_key": hashi_cluster_privkey,
     "ssh_target_key": host_privkey,
+    "outfile_ext": ".sh",
 }
 
 ## Agent 1 Consul
@@ -53,6 +58,7 @@ agent1_consul_template_dict = {
     "ssh_target_user": "ubuntu",
     # "ssh_target_key": hashi_cluster_privkey,
     "ssh_target_key": host_privkey,
+    "outfile_ext": ".sh",
 }
 
 ## Agent 1 Nomad
@@ -65,6 +71,7 @@ agent1_nomad_template_dict = {
     "ssh_target_user": "ubuntu",
     # "ssh_target_key": hashi_cluster_privkey,
     "ssh_target_key": host_privkey,
+    "outfile_ext": ".sh",
 }
 
 ## Agent 2 Consul
@@ -77,6 +84,7 @@ agent2_consul_template_dict = {
     "ssh_target_user": "ubuntu",
     # "ssh_target_key": hashi_cluster_privkey,
     "ssh_target_key": host_privkey,
+    "outfile_ext": ".sh",
 }
 
 ## Agent 2 Nomad
@@ -89,6 +97,7 @@ agent2_nomad_template_dict = {
     "ssh_target_user": "ubuntu",
     # "ssh_target_key": hashi_cluster_privkey,
     "ssh_target_key": host_privkey,
+    "outfile_ext": ".sh",
 }
 
 default_template_dict_list: list[dict[str, dict]] = [
