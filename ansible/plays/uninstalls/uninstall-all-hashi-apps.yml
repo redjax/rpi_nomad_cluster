@@ -1,0 +1,6 @@
+---
+- name: "Uninstall all Hashicorp apps"
+  hosts: all
+
+  roles:
+    - ../../roles/common/uninstall/uninstall-hashi-apps
