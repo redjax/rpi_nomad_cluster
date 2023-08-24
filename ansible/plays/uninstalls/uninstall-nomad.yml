@@ -1,0 +1,14 @@
+---
+- name: Uninstall Nomad
+  hosts: all
+
+  tasks:
+    - name: "Uninstall Nomad"
+      include_role:
+        name: ../../roles/common/uninstall/uninstall-hashi-apps
+        tasks_from: uninstall-nomad.yml
+
+    - name: "Post-Uninstall Nomad Cleanup"
+      include_role:
+        name: ../../roles/common/uninstall/uninstall-hashi-apps
+        tasks_from: uninstall-nomad_cleanup.yml

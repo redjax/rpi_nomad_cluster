@@ -1,0 +1,36 @@
+---
+- name: "[All OS Types] [Consul Uninstall] Check for presence of /etc/consul.d dir"
+  stat:
+    path: "/etc/consul.d"
+  register: etc_consul
+
+- name: "[All OS Types] [Consul Uninstall] Check for presence of /opt/consul dir"
+  stat:
+    path: "/opt/consul"
+  register: opt_consul
+
+- name: "[All OS Types] [Consul Uninstall] Check for presence of /etc/systemd/system/consul.service"
+  stat:
+    path: "/etc/systemd/system/consul.service"
+  register: systemd_consul
+
+- name: "[All OS Types] [Consul Uninstall] Remove /etc/consul.d if present"
+  file:
+    path: "/etc/consul.d"
+    state: absent
+  become: true
+  when: etc_consul.stat.exists
+
+- name: "[All OS Types] [Consul Uninstall] Remove /opt/consul if present"
+  file:
+    path: "/opt/consul"
+    state: absent
+  become: true
+  when: opt_consul.stat.exists
+
+- name: "[All OS Types] [Consul Uninstall] Remove /etc/systemd/system/consul.service if present"
+  file:
+    path: "/etc/systemd/system/consul.service"
+    state: absent
+  become: true
+  when: systemd_consul.stat.exists

@@ -1,0 +1,15 @@
+---
+- name: "[Debian] [Nomad Uninstall] Stop Nomad systemd service"
+  systemd:
+    name: nomad
+    state: stopped
+    enabled: false
+    daemon_reload: true
+  become: true
+
+- name: "[Debian] [Nomad Uninstall] Uninstall Nomad"
+  apt:
+    name: nomad
+    state: absent
+  become: true
+  when: ansible_facts['os_family'] == "Debian"
