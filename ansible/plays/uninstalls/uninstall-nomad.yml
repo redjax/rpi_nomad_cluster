@@ -12,3 +12,7 @@
       include_role:
         name: ../../roles/common/uninstall/uninstall-hashi-apps
         tasks_from: uninstall-nomad_cleanup.yml
+
+    - name: "Reboot server. Reason: Nomad uninstall"
+      include_role:
+        - ../../roles/maint/reboot-system
