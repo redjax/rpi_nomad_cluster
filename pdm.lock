@@ -2,17 +2,8 @@
 # It is not intended for manual editing.
 
 [[package]]
-name = "ansible"
-version = "8.1.0"
-requires_python = ">=3.9"
-summary = "Radically simple IT automation"
-dependencies = [
-    "ansible-core~=2.15.1",
-]
-
-[[package]]
 name = "ansible-core"
-version = "2.15.1"
+version = "2.15.3"
 requires_python = ">=3.9"
 summary = "Radically simple IT automation"
 dependencies = [
@@ -335,16 +326,12 @@ summary = "A small Python utility to set file creation time on Windows"
 lock_version = "4.2"
 cross_platform = true
 groups = ["default", "dev"]
-content_hash = "sha256:e7530f74d3848b04077422ab43257968d65d618b1f979ca5db85ef48d0c177c7"
+content_hash = "sha256:ae6ff8006b34b8e3e68f99c2af632a7e5463062ebc5806301d75468a696934da"
 
 [metadata.files]
-"ansible 8.1.0" = [
-    {url = "https://files.pythonhosted.org/packages/01/43/b5620e57e14a84d9bf257ba4797c2abfa13f7c3be04bc8cd35f86d2e6a2d/ansible-8.1.0-py3-none-any.whl", hash = "sha256:3bcfb06f2d65edc1c4876df33a52d4469d48d4fe534f1d8ffa196f1b0d81ab0e"},
-    {url = "https://files.pythonhosted.org/packages/87/d7/322dd9d88261e56862ade2f9b9c125d0de648857e755d7177500272d2e05/ansible-8.1.0.tar.gz", hash = "sha256:91f20b5bfcf5f298533c174a93881e00bc9e6b41411464f44c054a38d716a56a"},
-]
-"ansible-core 2.15.1" = [
-    {url = "https://files.pythonhosted.org/packages/1e/34/ba701d49f78d8aead7c20339bbc1eccc682894f08dc48f5c391792282c65/ansible-core-2.15.1.tar.gz", hash = "sha256:ed28eb4943e480004edc9ba1e9bee979a0650cb2f9372ce4a2bd572838c60d2b"},
-    {url = "https://files.pythonhosted.org/packages/80/71/d2582d918dda323ddf998f8e4bdcc35c5b7fabea27917d480670186d3f39/ansible_core-2.15.1-py3-none-any.whl", hash = "sha256:2926b1dc96ef69272195c91a1fedfe30b9aacd674cb04628b26626ecb0c8524a"},
+"ansible-core 2.15.3" = [
+    {url = "https://files.pythonhosted.org/packages/3c/4d/892b2c2211af9bea68e79b9899921cf96f370361bdd3355d1d84801d40bb/ansible-core-2.15.3.tar.gz", hash = "sha256:261bc01a15274fc5a6950d5b92b9aa1b7d7c6e8f7543c914505e5bfd9744793a"},
+    {url = "https://files.pythonhosted.org/packages/8a/0e/0b2767cb0a5c8772520927b003a71683b133b4726888a023ba2236fd14fb/ansible_core-2.15.3-py3-none-any.whl", hash = "sha256:bc2f5ab74e1c81609aaa9bc8f7f92d939d8e1c847923290301231bdf4dadc812"},
 ]
 "anyio 3.7.1" = [
     {url = "https://files.pythonhosted.org/packages/19/24/44299477fe7dcc9cb58d0a57d5a7588d6af2ff403fdd2d47a246c91a3246/anyio-3.7.1-py3-none-any.whl", hash = "sha256:91dee416e570e92c64041bd18b900d1d6fa78dff7048769ce5ac5ddad004fbb5"},
