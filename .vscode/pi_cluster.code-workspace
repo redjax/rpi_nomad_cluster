@@ -14,6 +14,7 @@
 	"settings": {
 		"yaml.schemas": {
 			"https://json.schemastore.org/yamllint.json": "file:///home/jack/pi_cluster/local_conf/user-data2"
-		}
+		},
+		"ansible.python.interpreterPath": "/home/jack/pi_cluster/.venv/bin/python3"
 	}
 }
