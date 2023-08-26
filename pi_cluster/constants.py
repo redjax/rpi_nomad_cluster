@@ -24,9 +24,11 @@ host_pubkey: Path = Path("~/.ssh/hashi-pi_id_rsa.pub").expanduser()
 ## Allowed types for HashiTemplate class instances
 valid_template_types: list[str] = ["server", "agent", "nomad_job"]
 
-## Server Consul
-server_consul_template_dict = {
-    "template_name": "Server Consul",
+retry_join_ips: list[str] = ["192.168.1.60"]
+
+## Server 1 Consul
+server1_consul_template_dict = {
+    "template_name": "Server 1 Consul",
     "template_file": f"{hashi_server_templates_dir}/hashi-up-server_consul.j2",
     "template_type": "server",
     "cluster_server_ip": "192.168.1.60",
@@ -34,11 +36,41 @@ server_consul_template_dict = {
     # "ssh_target_key": hashi_cluster_privkey,
     "ssh_target_key": host_privkey,
     "outfile_ext": ".sh",
+    "connect_enabled": True,
+    "bootstrap_expect": 1,
+}
+
+## Server 2 Consul
+server2_consul_template_dict = {
+    "template_name": "Server 2 Consul",
+    "template_file": f"{hashi_server_templates_dir}/hashi-up-server_consul.j2",
+    "template_type": "server",
+    "cluster_server_ip": "192.168.1.60",
+    "ssh_target_user": "ubuntu",
+    # "ssh_target_key": hashi_cluster_privkey,
+    "ssh_target_key": host_privkey,
+    "outfile_ext": ".sh",
+    "connect_enabled": True,
+    "bootstrap_expect": 3,
+}
+
+## Server 3 Consul
+server3_consul_template_dict = {
+    "template_name": "Server 3 Consul",
+    "template_file": f"{hashi_server_templates_dir}/hashi-up-server_consul.j2",
+    "template_type": "server",
+    "cluster_server_ip": "192.168.1.60",
+    "ssh_target_user": "ubuntu",
+    # "ssh_target_key": hashi_cluster_privkey,
+    "ssh_target_key": host_privkey,
+    "outfile_ext": ".sh",
+    "connect_enabled": True,
+    "bootstrap_expect": 1,
 }
 
 ## Server Nomad
-server_nomad_template_dict = {
-    "template_name": "Server Nomad",
+server1_nomad_template_dict = {
+    "template_name": "Server 1 Nomad",
     "template_file": f"{hashi_server_templates_dir}/hashi-up-server_nomad.j2",
     "template_type": "server",
     "cluster_server_ip": "192.168.1.60",
@@ -46,6 +78,39 @@ server_nomad_template_dict = {
     # "ssh_target_key": hashi_cluster_privkey,
     "ssh_target_key": host_privkey,
     "outfile_ext": ".sh",
+    "connect_enabled": True,
+    "bootstrap_expect": 1,
+    "retry_join_ips": retry_join_ips,
+}
+
+## Server Nomad
+server2_nomad_template_dict = {
+    "template_name": "Server 2 Nomad",
+    "template_file": f"{hashi_server_templates_dir}/hashi-up-server_nomad.j2",
+    "template_type": "server",
+    "cluster_server_ip": "192.168.1.61",
+    "ssh_target_user": "ubuntu",
+    # "ssh_target_key": hashi_cluster_privkey,
+    "ssh_target_key": host_privkey,
+    "outfile_ext": ".sh",
+    "connect_enabled": True,
+    "bootstrap_expect": 3,
+    "retry_join_ips": retry_join_ips,
+}
+
+## Server Nomad
+server3_nomad_template_dict = {
+    "template_name": "Server 3 Nomad",
+    "template_file": f"{hashi_server_templates_dir}/hashi-up-server_nomad.j2",
+    "template_type": "server",
+    "cluster_server_ip": "192.168.1.62",
+    "ssh_target_user": "ubuntu",
+    # "ssh_target_key": hashi_cluster_privkey,
+    "ssh_target_key": host_privkey,
+    "outfile_ext": ".sh",
+    "connect_enabled": True,
+    "bootstrap_expect": 3,
+    "retry_join_ips": retry_join_ips,
 }
 
 ## Agent 1 Consul
@@ -59,6 +124,8 @@ agent1_consul_template_dict = {
     # "ssh_target_key": hashi_cluster_privkey,
     "ssh_target_key": host_privkey,
     "outfile_ext": ".sh",
+    "connect_enabled": True,
+    "retry_join_ips": retry_join_ips,
 }
 
 ## Agent 1 Nomad
@@ -72,6 +139,8 @@ agent1_nomad_template_dict = {
     # "ssh_target_key": hashi_cluster_privkey,
     "ssh_target_key": host_privkey,
     "outfile_ext": ".sh",
+    "connect_enabled": True,
+    "retry_join_ips": retry_join_ips,
 }
 
 ## Agent 2 Consul
@@ -85,6 +154,8 @@ agent2_consul_template_dict = {
     # "ssh_target_key": hashi_cluster_privkey,
     "ssh_target_key": host_privkey,
     "outfile_ext": ".sh",
+    "connect_enabled": True,
+    "retry_join_ips": retry_join_ips,
 }
 
 ## Agent 2 Nomad
@@ -98,11 +169,17 @@ agent2_nomad_template_dict = {
     # "ssh_target_key": hashi_cluster_privkey,
     "ssh_target_key": host_privkey,
     "outfile_ext": ".sh",
+    "connect_enabled": True,
+    "retry_join_ips": retry_join_ips,
 }
 
 default_template_dict_list: list[dict[str, dict]] = [
-    server_consul_template_dict,
-    server_nomad_template_dict,
+    server1_consul_template_dict,
+    # server2_consul_template_dict,
+    # server3_consul_template_dict,
+    server1_nomad_template_dict,
+    # server2_nomad_template_dict,
+    # server3_nomad_template_dict,
     agent1_consul_template_dict,
     agent1_nomad_template_dict,
     agent2_consul_template_dict,

@@ -20,8 +20,10 @@ from constants import (
     hashi_server_templates_dir,
     hashi_up_templates_dir,
     scripts_export_dir,
-    server_consul_template_dict,
-    server_nomad_template_dict,
+    server1_consul_template_dict,
+    server1_nomad_template_dict,
+    server2_nomad_template_dict,
+    server3_nomad_template_dict,
     templates_dir,
 )
 from dependencies import get_server_agent_templates, get_ssh_keys

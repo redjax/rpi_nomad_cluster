@@ -20,8 +20,12 @@ from constants import (
     hashi_server_templates_dir,
     hashi_up_templates_dir,
     scripts_export_dir,
-    server_consul_template_dict,
-    server_nomad_template_dict,
+    server1_consul_template_dict,
+    server2_consul_template_dict,
+    server3_consul_template_dict,
+    server1_nomad_template_dict,
+    server2_nomad_template_dict,
+    server3_nomad_template_dict,
     templates_dir,
 )
 from dependencies import get_server_agent_templates, get_ssh_keys
@@ -83,12 +87,15 @@ if __name__ == "__main__":
     _keys = get_ssh_keys()
     ## Load templates
     all_templates = get_server_agent_templates()
+    # log.debug(f"Sample Server: {all_templates.servers[0].__dict__}")
+
+    # input("PAUSE")
 
     ## Perform default setup
     default_setup(ssh_keys=_keys, templates=all_templates)
 
     # log.info("Executing all rendered scripts")
-    # execute_all_rendered_scripts()
+    execute_all_rendered_scripts()
 
     traefik_job_templ: NomadJobTraefik = NomadJobTraefik(
         server_ip="192.168.1.60",

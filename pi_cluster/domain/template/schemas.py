@@ -23,6 +23,7 @@ class HashiServerTemplate(HashiTemplateBase):
     cluster_server_ip: str = field(default=None)
     ssh_target_user: Optional[str] = field(default="ubuntu")
     ssh_target_key: Optional[str] = field(default=None)
+    bootstrap_expect: int = field(default=1)
 
 
 @dataclass

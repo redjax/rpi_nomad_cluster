@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 from jinja2 import FileSystemLoader, Environment
 from pathlib import Path
-from typing import Union
+from typing import Union, Optional
 import os
 from constants import valid_template_types
 
@@ -12,6 +12,8 @@ class HashiTemplateBase:
     template_file: str = field(default=None)
     template_type: str = field(default=None)
     outfile_ext: str = field(default=".hcl")
+    connect_enabled: bool = field(default=False)
+    retry_join_ips: Optional[list] = field(default=None)
 
     @property
     def script_name(self) -> str:
