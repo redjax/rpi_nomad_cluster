@@ -128,4 +128,5 @@ This project uses [Ansible](https://www.ansible.com) to automate setup of the Pi
 - [Github: timebertt/pi-cloud-init reference repo](https://github.com/timebertt/pi-cloud-init/tree/master)
 - [Building a Nomad Cluster on Raspberry Pi Running Ubuntu Server](https://johansiebens.dev/posts/2020/08/building-a-nomad-cluster-on-raspberry-pi-running-ubuntu-server/)
 - [Running Hashicorp Nomad, Consul, Pihole, & Gitea on Raspberry Pi](https://medium.com/swlh/running-hashicorp-nomad-consul-pihole-and-gitea-on-raspberry-pi-3-b-f3f0d66c907)
+- [Deploying a highly-available Nomad cluster with hashi-up](https://johansiebens.dev/posts/2020/07/deploying-a-highly-available-nomad-cluster-with-hashi-up/)
 - [Traefik in Nomad using Consul & TLS](https://storiesfromtheherd.com/traefik-in-nomad-using-consul-and-tls-5be0007794ee)
