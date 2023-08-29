@@ -1,0 +1,52 @@
+job "nextcloud" {
+  # Replace with datacenter name
+  datacenters = [{{ dc_name }}]
+
+  group "nextcloud" {
+    count = 1
+
+    network {
+      port "http" {
+        to = 80
+      }
+
+      port "https" {
+        to = 443
+      }
+    }
+
+    task "nc_web" {
+      driver = "docker"
+
+      resources {
+          memory = {{ resource_memory }}
+      }
+
+      config {
+        image = "ghcr.io/linuxserver/nextcloud"
+        ports = ["http", "https"]
+        mount {
+          type = "bind"
+          # Bind mount, put host path to NC data dir
+          source = "/path/to/nextcloud/data"
+          # Don't touch. This is the dir in the container
+          target = "/data"
+          readonly = false
+        }
+        mount {
+          type = "bind"
+          # Bind mount, put host path to NC conf dir
+          source = "/path/to/nextcloud/conf"
+          # Don't touch. This is the dir in the container
+          target = "/config"
+        }
+      }
+
+      env {
+        PUID = "1000"
+        PGID = "1000"
+        TZ = "America/New_York"
+      }
+    }  
+  }
+}

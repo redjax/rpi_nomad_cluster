@@ -3,9 +3,10 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Optional
 
-from domain.template import HashiTemplatesList
+from domain.template import HashiClusterTemplatesList
 from jinja2 import Environment, FileSystemLoader, Template
 from loguru import logger as log
+
 
 def get_templates(
     template_dir: str = None, template_files: list[Path] = []
@@ -97,7 +98,7 @@ def render_template_to_file(
         _out.write(_render)
 
 
-def load_hashi_up_templates(templates: list[Path] = []) -> HashiTemplatesList:
+def load_hashi_up_templates(templates: list[Path] = []) -> HashiClusterTemplatesList:
     """Sort a list of Agent & Server templates into a HashiTemplates object."""
     templates_dict: dict[str, list[Path]] = {"servers": [], "agents": []}
 
@@ -123,7 +124,9 @@ def load_hashi_up_templates(templates: list[Path] = []) -> HashiTemplatesList:
             pass
 
     try:
-        templates: HashiTemplatesList = HashiTemplatesList(**templates_dict)
+        templates: HashiClusterTemplatesList = HashiClusterTemplatesList(
+            **templates_dict
+        )
     except Exception as exc:
         raise Exception(
             f"Unhandled exception converting loaded templates dict to HashiTemplates class instance. Details: {exc}"

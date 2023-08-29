@@ -1,0 +1,6 @@
+---
+- name: Reboot machine(s)
+  hosts: all
+
+  roles:
+    - ../../roles/maint/reboot-system

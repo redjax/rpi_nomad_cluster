@@ -20,8 +20,12 @@ from constants import (
     hashi_server_templates_dir,
     hashi_up_templates_dir,
     scripts_export_dir,
-    server_consul_template_dict,
-    server_nomad_template_dict,
+    server1_consul_template_dict,
+    server2_consul_template_dict,
+    server3_consul_template_dict,
+    server1_nomad_template_dict,
+    server2_nomad_template_dict,
+    server3_nomad_template_dict,
     templates_dir,
 )
 from dependencies import get_server_agent_templates, get_ssh_keys
@@ -30,7 +34,9 @@ from domain.template import (
     HashiAgentTemplate,
     HashiServerTemplate,
     HashiTemplate,
-    HashiTemplatesList,
+    HashiClusterTemplatesList,
+    NomadJobTemplate,
+    NomadJobTraefik,
 )
 from loguru import logger as log
 from red_utils.loguru_utils import init_logger
@@ -40,7 +46,7 @@ init_logger()
 
 
 def default_setup(
-    ssh_keys: SSHKeyPair = None, templates: HashiTemplatesList = None
+    ssh_keys: SSHKeyPair = None, templates: HashiClusterTemplatesList = None
 ) -> None:
     if not ssh_keys:
         raise ValueError("Missing SSHKeyPair object")
@@ -51,9 +57,9 @@ def default_setup(
 
     if not templates:
         raise ValueError("Missing templates list")
-    if not isinstance(templates, HashiTemplatesList):
+    if not isinstance(templates, HashiClusterTemplatesList):
         raise TypeError(
-            f"Invalid type for templates: ({type(templates)}). Must be of type HashiTemplatesList"
+            f"Invalid type for templates: ({type(templates)}). Must be of type HashiClusterTemplatesList"
         )
 
     ## Copy SSH keys
@@ -81,9 +87,29 @@ if __name__ == "__main__":
     _keys = get_ssh_keys()
     ## Load templates
     all_templates = get_server_agent_templates()
+    # log.debug(f"Sample Server: {all_templates.servers[0].__dict__}")
+
+    # input("PAUSE")
 
     ## Perform default setup
     default_setup(ssh_keys=_keys, templates=all_templates)
 
-    log.info("Executing all rendered scripts")
+    # log.info("Executing all rendered scripts")
     execute_all_rendered_scripts()
+
+    traefik_job_templ: NomadJobTraefik = NomadJobTraefik(
+        server_ip="192.168.1.60",
+        service_name="traefik-http",
+        docker_img="traefik",
+        http_port=80,
+        admin_port=8080,
+        api_dashboard="true",
+        api_insecure="true",
+        template_name="nomad_traefik",
+        template_file="templates/nomad_jobs/traefik.nomad.j2",
+        template_type="nomad_job",
+        outfile_ext=".nomad",
+    )
+    log.debug(f"Traefik Nomad Job template: {traefik_job_templ}")
+
+    traefik_job_templ.to_file(output_dir="export/nomad/jobs")

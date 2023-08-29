@@ -14,6 +14,11 @@
     path: "/etc/systemd/system/nomad.service"
   register: systemd_nomad
 
+- name: "[All OS Types] [Nomad Uninstall] Check for presence of /usr/local/bin/nomad"
+  stat:
+    path: "/usr/local/bin/nomad"
+  register: nomad_bin
+
 - name: "[All OS Types] [Nomad Uninstall] Remove /etc/nomad.d if present"
   file:
     path: "/etc/nomad.d"
@@ -34,3 +39,10 @@
     state: absent
   become: true
   when: systemd_nomad.stat.exists
+
+- name: "[All OS Types] [Nomad Uninstall] Remove /usr/local/bin/nomad if present"
+  file:
+    path: "/usr/local/bin/nomad"
+    state: absent
+  become: true
+  when: nomad_bin.stat.exists

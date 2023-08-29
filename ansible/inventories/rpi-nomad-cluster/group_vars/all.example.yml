@@ -28,3 +28,19 @@ git_user_email: "no@no.com"
 cl_srv1_ip: "192.168.1.xxx"
 cl_ag1_ip: "192.168.1.xxx"
 cl_ag2_ip: "192.168.1.xxx"
+
+## DNS
+dns_ns: "192.168.1.xxx"
+
+###################
+# CNI Plugin Vars #
+###################
+
+cni_app: cni
+cni_version: 1.3.0
+cni_os: linux
+## amd64, arm, arm64
+cni_arch: arm64
+cni_dl_url: "https://github.com/containernetworking/plugins/releases/download/v{{ cni_version }}/cni-plugins-{{ cni_os }}-{{ cni_arch }}-v{{ cni_version }}.tgz"
+cni_plugins_dir: /opt/cni/bin
+cni_plugins_dir_mode: "0755"

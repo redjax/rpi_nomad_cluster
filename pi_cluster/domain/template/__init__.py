@@ -4,5 +4,9 @@ from .schemas import (
     HashiAgentTemplate,
     HashiServerTemplate,
     HashiTemplate,
-    HashiTemplatesList,
+    HashiClusterTemplatesList,
 )
+
+from .base_schemas import HashiTemplateBase
+
+from .nomad_jobs import NomadJobTemplate, NomadJobTraefik

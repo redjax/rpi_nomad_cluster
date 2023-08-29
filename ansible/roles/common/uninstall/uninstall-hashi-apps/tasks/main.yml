@@ -17,3 +17,5 @@
 
 - name: "[All OS Types] [Consul Uninstall] Cleanup system after Consul uninstall"
   include_tasks: uninstall-consul_cleanup.yml
+
+- include_tasks: reboot-server.yml

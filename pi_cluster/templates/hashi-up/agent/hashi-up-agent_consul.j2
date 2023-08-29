@@ -4,4 +4,6 @@ hashi-up consul install \
   --ssh-target-key "{{ ssh_target_key }}" \
   --advertise-addr {% raw %}"{{ GetInterfaceIP \"eth0\" }}"{% endraw %} \
   --bind-addr {% raw %}"{{ GetInterfaceIP \"eth0\" }}"{% endraw %} \
-  --retry-join {{ cluster_server_ip }}
+  --retry-join {{ cluster_server_ip }}{% if connect_enabled %} \
+  --connect
+  {% endif %}
