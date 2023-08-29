@@ -1,0 +1,43 @@
+job "traefik" {
+  datacenters = [{{ dc_name }}]
+  type        = "service"
+
+  group "traefik" {
+    count = 1
+
+    network {
+      port  "http"{
+        #  static = 80
+        static = {{ http_port }}
+      }
+      port  "admin"{
+        #  static = 8080
+        static = {{ admin_port }}
+      }
+    }
+
+    service {
+      # name = "traefik-http"
+      name = "{{ service_name }}"
+      provider = "nomad"
+      port = "http"
+    }
+
+    task "server" {
+      driver = "docker"
+      config {
+        # image = "traefik:2.8-rc1"
+        image = {{ docker_img }}
+        ports = ["admin", "http"]
+        args = [
+          "--api.dashboard={{ api_dashboard }}",
+          "--api.insecure={{ api_insecure }}", ### For Test only, please do not use that in production
+          "--entrypoints.web.address=:${NOMAD_PORT_http}",
+          "--entrypoints.traefik.address=:${NOMAD_PORT_admin}",
+          "--providers.nomad=true",
+          "--providers.nomad.endpoint.address=http://{{ server_ip }}:4646"
+        ]
+      }
+    }
+  }
+}

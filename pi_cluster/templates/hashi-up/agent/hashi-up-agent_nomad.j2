@@ -3,4 +3,8 @@ hashi-up nomad install \
   --ssh-target-user {{ ssh_target_user }} \
   --ssh-target-key "{{ ssh_target_key }}" \
   --client \
-  --advertise {% raw %}"{{ GetInterfaceIP \"eth0\" }}"{% endraw %}
+  --advertise {% raw %}"{{ GetInterfaceIP \"eth0\" }}"{% endraw %}{% if retry_join_ips|length > 0 %} \
+  {% if retry_join_ips|length > 1 %}{% for _ip in retry_join_ips %}--retry-join {{_ip}} \{% endfor %}
+  {% else %}--retry-join {{ retry_join_ips[0] }}
+  {% endif %}
+  {% endif %}

@@ -4,4 +4,7 @@ hashi-up nomad install \
   --ssh-target-key "{{ ssh_target_key }}" \
   --server \
   --advertise {% raw %}"{{ GetInterfaceIP \"eth0\" }}"{% endraw %} \
-  --bootstrap-expect 1
+  --bootstrap-expect {{ bootstrap_expect }}{% if retry_join_ips|length > 1 %} \
+  {% for _ip in retry_join_ips %}--retry-join {{_ip}} \
+  {% endfor %}
+  {% endif %}

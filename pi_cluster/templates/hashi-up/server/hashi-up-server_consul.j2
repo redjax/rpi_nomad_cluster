@@ -5,4 +5,6 @@ hashi-up consul install \
     --server \
     --advertise-addr {% raw %}"{{ GetInterfaceIP \"eth0\" }}"{% endraw %} \
     --bind-addr {% raw %}"{{ GetInterfaceIP \"eth0\" }}"{% endraw %} \
-    --client-addr 0.0.0.0
+    --client-addr 0.0.0.0{% if connect_enabled %} \
+    --connect{% endif %}{% if bootstrap_expect %} \
+    --bootstrap-expect {{ bootstrap_expect }}{% endif %}

@@ -14,6 +14,11 @@
     path: "/etc/systemd/system/consul.service"
   register: systemd_consul
 
+- name: "[All OS Types] [Consul Uninstall] Check for presence of /usr/local/bin/consul"
+  stat:
+    path: "/usr/local/bin/consul"
+  register: consul_bin
+
 - name: "[All OS Types] [Consul Uninstall] Remove /etc/consul.d if present"
   file:
     path: "/etc/consul.d"
@@ -34,3 +39,10 @@
     state: absent
   become: true
   when: systemd_consul.stat.exists
+
+- name: "[All OS Types] [Consul Uninstall] Remove /usr/local/bin/consul if present"
+  file:
+    path: "/usr/local/bin/consul"
+    state: absent
+  become: true
+  when: consul_bin.stat.exists

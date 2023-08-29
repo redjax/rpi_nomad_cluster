@@ -20,8 +20,10 @@ from constants import (
     hashi_server_templates_dir,
     hashi_up_templates_dir,
     scripts_export_dir,
-    server_consul_template_dict,
-    server_nomad_template_dict,
+    server1_consul_template_dict,
+    server1_nomad_template_dict,
+    server2_nomad_template_dict,
+    server3_nomad_template_dict,
     templates_dir,
 )
 from dependencies import get_server_agent_templates, get_ssh_keys
@@ -30,7 +32,7 @@ from domain.template import (
     HashiAgentTemplate,
     HashiServerTemplate,
     HashiTemplate,
-    HashiTemplatesList,
+    HashiClusterTemplatesList,
 )
 from loguru import logger as log
 from red_utils.loguru_utils import init_logger
@@ -40,7 +42,7 @@ init_logger()
 
 
 def default_setup(
-    ssh_keys: SSHKeyPair = None, templates: HashiTemplatesList = None
+    ssh_keys: SSHKeyPair = None, templates: HashiClusterTemplatesList = None
 ) -> None:
     if not ssh_keys:
         raise ValueError("Missing SSHKeyPair object")
@@ -51,9 +53,9 @@ def default_setup(
 
     if not templates:
         raise ValueError("Missing templates list")
-    if not isinstance(templates, HashiTemplatesList):
+    if not isinstance(templates, HashiClusterTemplatesList):
         raise TypeError(
-            f"Invalid type for templates: ({type(templates)}). Must be of type HashiTemplatesList"
+            f"Invalid type for templates: ({type(templates)}). Must be of type HashiClusterTemplatesList"
         )
 
     ## Copy SSH keys
