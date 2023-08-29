@@ -1,0 +1,6 @@
+---
+# tasks file for install-cni-plugins
+- include_tasks: install-debian.yml
+  when: ansible_facts["os_family"] == "Debian"
+
+- include_tasks: reboot-system.yml

@@ -1,0 +1,4 @@
+---
+# tasks file for reboot-system
+
+- include_tasks: regular-reboot.yml
