@@ -12,6 +12,10 @@
     ## Nomad Serf WAN
     - { port: 4648, proto: tcp }
     - { port: 4648, proto: udp }
+    ## Traefik web port
+    - { port: 8080, proto: tcp }
+    ## Traefik API port
+    - { port: 8081, proto: tcp }
     ## Consul DNS
     - { port: 8600, proto: tcp }
     - { port: 8600, proto: udp }
