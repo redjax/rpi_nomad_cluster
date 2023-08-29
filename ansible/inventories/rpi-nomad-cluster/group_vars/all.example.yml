@@ -37,6 +37,8 @@ dns_ns: "192.168.1.xxx"
 ###################
 
 cni_app: cni
+## Find current version at:
+#  https://github.com/containernetworking/plugins/releases
 cni_version: 1.3.0
 cni_os: linux
 ## amd64, arm, arm64
